@@ -2,9 +2,7 @@
   "name": "@jira-observability/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
   "private": true,
-  "dependencies": {},
   "devDependencies": {
     "@nx/js": "20.2.2",
     "@swc-node/register": "~1.9.1",
@@ -17,5 +15,6 @@
   },
   "workspaces": [
     "packages/**"
-  ]
+  ],
+  "packageManager": "yarn@4.5.3"
 }
