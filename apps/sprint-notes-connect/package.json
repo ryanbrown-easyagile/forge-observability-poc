@@ -1,0 +1,37 @@
+{
+  "name": "@jira-observability/sprint-notes-connect",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "sprint-notes-connect",
+    "projectType": "application",
+    "sourceRoot": "apps/sprint-notes-connect/src",
+    "targets": {
+      "serve": {
+        "executor": "@nx/js:node",
+        "defaultConfiguration": "development",
+        "dependsOn": [
+          "build",
+          "ngrok"
+        ],
+        "options": {
+          "buildTarget": "sprint-notes-connect:build",
+          "runBuildTargetDependencies": false
+        },
+        "configurations": {
+          "development": {
+            "buildTarget": "sprint-notes-connect:build:development"
+          },
+          "production": {
+            "buildTarget": "sprint-notes-connect:build:production"
+          }
+        }
+      },
+      "test": {
+        "options": {
+          "passWithNoTests": true
+        }
+      }
+    }
+  }
+}

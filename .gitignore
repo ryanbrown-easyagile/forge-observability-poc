@@ -33,6 +33,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+ngrok.yml
 
 # System Files
 .DS_Store
@@ -49,3 +50,4 @@ Thumbs.db
 !.yarn/sdks
 !.yarn/versions
 vite.config.*.timestamp*
+test-output

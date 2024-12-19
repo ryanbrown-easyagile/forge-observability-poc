@@ -5,6 +5,9 @@
   "references": [
     {
       "path": "./apps/sprint-notes-ui"
+    },
+    {
+      "path": "./apps/sprint-notes-connect"
     }
   ]
 }

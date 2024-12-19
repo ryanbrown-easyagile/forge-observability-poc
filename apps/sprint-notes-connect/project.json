@@ -1,0 +1,14 @@
+{
+    "targets": {
+        "ngrok": {
+            "executor": "nx:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "ngrok start --config {projectRoot}/ngrok.yml --all"
+                    }
+                ]
+            }
+        }
+    }
+}
