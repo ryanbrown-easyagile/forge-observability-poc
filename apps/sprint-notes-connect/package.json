@@ -11,8 +11,7 @@
         "executor": "@nx/js:node",
         "defaultConfiguration": "development",
         "dependsOn": [
-          "build",
-          "ngrok"
+          "build"
         ],
         "options": {
           "buildTarget": "sprint-notes-connect:build",
@@ -20,7 +19,8 @@
         },
         "configurations": {
           "development": {
-            "buildTarget": "sprint-notes-connect:build:development"
+            "buildTarget": "sprint-notes-connect:build:development",
+            "inspect": true
           },
           "production": {
             "buildTarget": "sprint-notes-connect:build:production"

@@ -1,0 +1,26 @@
+{
+    "name": "Easy Agile Sprint Notes",
+    "description": "Sprint Notes for Jira - by Easy Agile",
+    "key": "com.easyagile.sprint.notes",
+    "baseUrl": "https://rbrown-eanotes.ngrok.io",
+    "vendor": {
+        "name": "Easy Agile",
+        "url": "https://www.easyagile.com"
+    },
+    "authentication": {
+        "type": "none"
+    },
+    "apiVersion": 1,
+    "modules": {
+        "generalPages": [
+            {
+                "url": "/assests/helloworld.html",
+                "key": "hello-world",
+                "location": "system.top.navigation.bar",
+                "name": {
+                    "value": "Greeting"
+                }
+            }
+        ]
+    }
+}

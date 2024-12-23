@@ -1,0 +1,4 @@
+schema-version: '3'
+id: b899068b-5988-422f-9c2b-f0e925acbf3d
+name: atlassian-connect-express-template
+type: library
