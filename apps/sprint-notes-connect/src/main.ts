@@ -1,3 +1,7 @@
+
+import { setupTracing } from './tracer';
+setupTracing('ea-notes');
+
 import express, { Request } from 'express';
 
 import bodyParser from 'body-parser';
@@ -15,7 +19,7 @@ import helmet from 'helmet';
 import nocache from 'nocache';
 
 import routes from './routes';
-import e from 'express';
+import { initialiseExpressLogger } from './logger';
 
 // Bootstrap Express and atlassian-connect-express
 const app = express();
@@ -28,27 +32,7 @@ const addon = ace(app, undefined, undefined, fileNames);
 const port = addon.config.port();
 app.set('port', port);
 
-// Log requests, using an appropriate formatter by env
-const devEnv = app.get('env') === 'development';
-if(devEnv) {
-  app.use(morgan('dev'));
-}
-else {
-  app.use(morgan((tokens, req, res) => {
-    return JSON.stringify({
-      method: tokens.method(req, res),
-      url: redactJwtTokens(req),
-      status: tokens.status(req, res),
-      contentLength: tokens.res(req, res, 'content-length'),
-      responseTime: tokens['response-time'](req, res) + 'ms',
-      userAgent: tokens['user-agent'](req, res),
-    })
-  }));
-}
-app.use(morgan(devEnv ? 'dev' : 'combined'));
-
-// We don't want to log JWT tokens, for security reasons
-morgan.token('url', redactJwtTokens);
+initialiseExpressLogger(app);
 
 // Configure Handlebars
 const viewsDir = path.join(__dirname, 'views');
@@ -95,15 +79,3 @@ http.createServer(app).listen(port, () => {
   // Enables auto registration/de-registration of app into a host in dev mode
   // if (devEnv) addon.register();
 });
-
-function redactJwtTokens(req : Request) {
-  const url = req.originalUrl || req.url || '';
-  const params = new URLSearchParams(url);
-  let redacted = url;
-  params.forEach((value, key) => {
-    if (key.toLowerCase() === 'jwt') {
-      redacted = redacted.replace(value, 'redacted');
-    }
-  });
-  return redacted;
-}

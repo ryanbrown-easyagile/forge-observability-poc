@@ -64,6 +64,16 @@
   ],
   "packageManager": "yarn@4.5.3",
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/exporter-trace-otlp-proto": "^0.57.0",
+    "@opentelemetry/instrumentation": "^0.57.0",
+    "@opentelemetry/instrumentation-express": "^0.47.0",
+    "@opentelemetry/instrumentation-http": "^0.57.0",
+    "@opentelemetry/instrumentation-winston": "^0.44.0",
+    "@opentelemetry/resources": "^1.30.0",
+    "@opentelemetry/sdk-trace-base": "^1.30.0",
+    "@opentelemetry/sdk-trace-node": "^1.30.0",
+    "@opentelemetry/semantic-conventions": "^1.28.0",
     "atlassian-connect-express": "^11.4.1",
     "axios": "^1.6.0",
     "cookie-parser": "^1.4.7",
@@ -76,6 +86,7 @@
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
     "react-router-dom": "6.11.2",
-    "styled-components": "5.3.6"
+    "styled-components": "5.3.6",
+    "winston": "^3.17.0"
   }
 }
