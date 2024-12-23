@@ -2,12 +2,10 @@
 import { setupTracing } from './tracer';
 setupTracing('ea-notes');
 
-import express, { Request } from 'express';
+import express from 'express';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
-import morgan from 'morgan';
-
 import ace from 'atlassian-connect-express';
 
 import hbs from 'hbs';

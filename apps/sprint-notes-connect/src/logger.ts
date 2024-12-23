@@ -1,6 +1,6 @@
 import winston, {Logger} from 'winston';
-import morgan from 'morgan';
-import { Express, Request } from 'express';
+import expressWinston from 'express-winston';
+import { Express } from 'express';
 
 let _logger : Logger;
 function getLogger() {
@@ -28,31 +28,52 @@ function getLogger() {
     }
     return _logger;
 }
-    
 
-export function initialiseExpressLogger(app: Express) { 
+export function info(message: string) {
+    getLogger().info(message);
+}
+
+export function error(message: string) {
+    getLogger().error(message);
+}
+
+export function warn(message: string) {
+    getLogger().warn(message);
+}
+
+export function debug(message: string) {
+    getLogger().debug(message);
+}
+
+export function initialiseExpressLogger(app: Express) {
   // Log requests, using an appropriate formatter by env
-  const devEnv = app.get('env') === 'development';
-    const morganConfig = { stream: { write: (message : string) => getLogger().info(message.trim()) } };
-  if (!devEnv) {
-    app.use(morgan('dev', morganConfig));
-  } else {
-    app.use(
-      morgan('combined', morganConfig)
-    );
-  }
-  morgan.token('url', redactJwtTokens);
+  app.use(expressWinston.logger({
+    winstonInstance: getLogger(),
+    meta: true,
+    msg: 'Request Received {{req.method}} {{req.path}}',
+    requestWhitelist: ['url', 'headers', 'method', 'httpVersion', 'originalUrl', 'query'], 
+    headerBlacklist: ['authorization'],
+    requestFilter: (req, propName) => {
+      console.log('propName', propName);
+      if (propName === 'url' || propName === 'originalUrl') {
+        return redactJwtTokens(req[propName]);
+      }
+      if (propName === 'query' && req[propName].jwt) {
+        req[propName].jwt = 'redacted';
+      }
+      return req[propName];
+    },
+  }));
   getLogger().info('Express logger initialised');
 }
 
-function redactJwtTokens(req: Request) {
-  const url = req.originalUrl || req.url || '';
-  const params = new URLSearchParams(url);
-  let redacted = url;
-  params.forEach((value, key) => {
+function redactJwtTokens(value: string) {
+  const [path, queryString] = value.split('?');
+  const params = new URLSearchParams(queryString);
+  params.forEach((_value, key) => {
     if (key.toLowerCase() === 'jwt') {
-      redacted = redacted.replace(value, 'redacted');
+      params.set(key, 'redacted');
     }
   });
-  return redacted;
+  return `${path}?${params.toString()}`;
 }
