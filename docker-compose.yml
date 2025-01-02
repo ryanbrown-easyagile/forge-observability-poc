@@ -1,10 +1,12 @@
 services:
-  web:
-    build:
-      context: .
-      dockerfile: apps/spring-notes-ui/Dockerfile
-    ports:
-      - "8080:80"
+  # web:
+  #   build:
+  #     context: .
+  #     dockerfile: apps/spring-notes-ui/Dockerfile
+  #   ports:
+  #     - "8080:80"
+  #   networks:
+  #     - jira-observability
   connect:
     build:
       context: .
@@ -15,8 +17,17 @@ services:
       NODE_ENV: production
       PORT: 3333
       DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-LollyGobbleBlissBombs}@db:5432/${POSTGRES_DB:-notes}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT} 
+      OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: ${OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE}
+      OTEL_RESOURCE_ATTRIBUTES: ${OTEL_RESOURCE_ATTRIBUTES}
+      OTEL_SERVICE_NAME: ea-notes-connect
     depends_on:
-      - db
+      otelcol:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - jira-observability
   db:
     image: postgres:latest
     restart: always
@@ -34,7 +45,237 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-notes}
     volumes:
       - db:/data/postgres
+    networks:
+      - jira-observability
+
+  jaeger:
+    image: jaegertracing/jaeger-collector:latest
+    container_name: jaeger
+    command:
+      - "--metrics-backend=prometheus"
+      - "--es.server-urls=https://opensearch-node1:9200"
+      - "--es.tls.enabled=true"
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+    restart: unless-stopped
+    ports:
+      - "16686" # Jaeger UI
+      - "4317" # OTLP gRPC default port
+      - "14269:14269"
+      - "14268:14268"
+      - "14267:14267"
+      - "14250:14250"
+      - "9411:9411"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+      - METRICS_STORAGE_TYPE=prometheus
+      - SPAN_STORAGE_TYPE=opensearch
+      - ES_TAGS_AS_FIELDS_ALL=true
+      - ES_USERNAME=admin
+      - ES_PASSWORD=${OPENSEARCH_ADMIN_PASSWORD}
+      - ES_TLS_SKIP_HOST_VERIFY=true
+    depends_on:
+      - opensearch-dashboards
+    networks:
+      - jira-observability
+
+  jaeger-agent:
+    image: jaegertracing/jaeger-agent:latest
+    container_name: jaeger-agent
+    hostname: jaeger-agent
+    command: ["--reporter.grpc.host-port=jaeger:14250"]
+    ports:
+      - "3000"
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+    restart: on-failure
+    environment:
+      - SPAN_STORAGE_TYPE=opensearch
+    depends_on:
+      - jaeger
+    networks:
+      - jira-observability
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:10.2.0
+    container_name: grafana
+    deploy:
+      resources:
+        limits:
+          memory: 100M
+    environment:
+      - "GF_INSTALL_PLUGINS=grafana-opensearch-datasource"
+    volumes:
+      - ./config/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./config/grafana/provisioning/:/etc/grafana/provisioning/
+    ports:
+      - "3000:3000"
+    networks:
+      - jira-observability
+    depends_on:
+      - prometheus
+  
+  # OpenTelemetry Collector
+  otelcol:
+    image: otel/opentelemetry-collector-contrib:0.93.0
+    container_name: otel-col
+    deploy:
+      resources:
+        limits:
+          memory: 250M
+    restart: unless-stopped
+    command:
+      [
+        "--config=/etc/otelcol-config.yml",
+        "--config=/etc/otelcol-config-extras.yml",
+      ]
+    volumes:
+      - ./config/otelcollector/otelcol-config.yml:/etc/otelcol-config.yml
+      - ./config/otelcollector/otelcol-config-extras.yml:/etc/otelcol-config-extras.yml
+    ports:
+      - "4317" # OTLP over gRPC receiver
+      - "4318:4318" # OTLP over HTTP receiver
+      - "13133:13133" # health check port
+      - "9464" # Prometheus exporter
+      - "8888" # metrics endpoint
+    depends_on:
+      - jaeger-agent
+      - data-prepper
+      - prometheus
+    environment:
+      - ENVOY_PORT
+    networks:
+      - jira-observability
+
+  # Prometheus
+  prometheus:
+    image: quay.io/prometheus/prometheus:v2.47.2
+    container_name: prometheus
+    command:
+      - --web.console.templates=/etc/prometheus/consoles
+      - --web.console.libraries=/etc/prometheus/console_libraries
+      - --storage.tsdb.retention.time=1h
+      - --config.file=/etc/prometheus/prometheus-config.yaml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --web.route-prefix=/
+      - --enable-feature=exemplar-storage
+      - --enable-feature=otlp-write-receiver
+    volumes:
+      - prometheus_data:/usr/share/prometheus/data
+      - ./config/prometheus/prometheus-config.yaml:/etc/prometheus/prometheus-config.yaml
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+    ports:
+      - "9090:9090"
+    networks:
+      - jira-observability
+
+
+  opensearch-node1:
+    image: opensearchproject/opensearch:2.18.0
+    container_name: opensearch-node1
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node1
+      - discovery.seed_hosts=opensearch-node1,opensearch-node2
+      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2
+      - plugins.query.datasources.encryption.masterkey=8e3f206ea7c07cc1bfc5cf40
+      - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+      - "OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_ADMIN_PASSWORD}"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
+    volumes:
+      - opensearch-data1:/usr/share/opensearch/data/2.18.0
+    ports:
+      - 9200:9200
+      - 9600:9600 # required for Performance Analyzer
+    networks:
+      - jira-observability
+  
+  opensearch-node2:
+    image: opensearchproject/opensearch:2.18.0
+    container_name: opensearch-node2
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node2
+      - discovery.seed_hosts=opensearch-node1,opensearch-node2
+      - cluster.initial_cluster_manager_nodes=opensearch-node1,opensearch-node2
+      - bootstrap.memory_lock=true
+      - plugins.query.datasources.encryption.masterkey=8e3f206ea7c07cc1bfc5cf40
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_ADMIN_PASSWORD}"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-data2:/usr/share/opensearch/data/2.18.0
+    networks:
+      - jira-observability
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:2.18.0
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601
+    expose:
+      - "5601"
+    environment:
+      - 'OPENSEARCH_HOSTS=["https://opensearch-node1:9200","https://opensearch-node2:9200"]'
+    depends_on:
+      - opensearch-node1
+      - opensearch-node2
+    networks:
+      - jira-observability
+    volumes:
+      - ./config/dashboards/opensearch_dashboards.yml:/usr/share/opensearch-dashboards/config/opensearch_dashboards.yml
+
+  # OpenSearch store - dashboard
+  data-prepper:
+    platform: linux/amd64
+    image: opensearchproject/data-prepper:2.10.1
+    volumes:
+      - /data/service-map/
+      - ./config/dataprepper/templates/ss4o_metrics.json:/usr/share/data-prepper/templates/ss4o_metrics.json
+      - ./config/dataprepper/templates/ss4o_logs.json:/usr/share/data-prepper/templates/ss4o_logs.json
+      - ./config/dataprepper/templates/ss4o_traces.json:/usr/share/data-prepper/templates/ss4o_traces.json
+      - ./config/dataprepper/pipelines.yaml:/usr/share/data-prepper/pipelines/pipelines.yaml
+      - ./config/dataprepper/data-prepper-config.yaml:/usr/share/data-prepper/config/data-prepper-config.yaml
+    ports:
+      - "21890:21890"
+      - "21891:21891"
+      - "21892:21892"
+    expose:
+      - "21890"
+      - "21891"
+      - "21892"
+    depends_on:
+      - opensearch-dashboards
+    networks:
+      - jira-observability
 
 volumes:
   db:
-    
+  opensearch-data1:
+  opensearch-data2:
+  prometheus_data:
+
+networks:
+  jira-observability:

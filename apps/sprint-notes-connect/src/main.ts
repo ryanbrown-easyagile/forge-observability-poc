@@ -1,6 +1,6 @@
 
 import { setupTracing } from './tracer';
-setupTracing('ea-notes');
+setupTracing('ea-notes-connect');
 
 import express from 'express';
 
@@ -17,7 +17,7 @@ import helmet from 'helmet';
 import nocache from 'nocache';
 
 import routes from './routes';
-import { initialiseExpressLogger } from './logger';
+import { info, initialiseExpressLogger } from './logger';
 
 import pg from 'pg';
 import longjohn from 'longjohn';
@@ -80,8 +80,7 @@ routes(app, addon);
 
 // Boot the HTTP server
 http.createServer(app).listen(port, () => {
-  console.log('App server running at http://' + os.hostname() + ':' + port);
-
+  info('App server running at http://' + os.hostname() + ':' + port);
   // Enables auto registration/de-registration of app into a host in dev mode
   // if (devEnv) addon.register();
 });
