@@ -19,6 +19,14 @@ import nocache from 'nocache';
 import routes from './routes';
 import { initialiseExpressLogger } from './logger';
 
+import pg from 'pg';
+import longjohn from 'longjohn';
+
+// if(process.env.NODE_ENV !== 'production') {
+//   require('pg');
+//   require('longjohn');
+// }
+
 // Bootstrap Express and atlassian-connect-express
 const app = express();
 const fileNames = {
