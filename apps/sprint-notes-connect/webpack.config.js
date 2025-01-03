@@ -17,6 +17,7 @@ module.exports = {
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: true,
+      externalDependencies: 'none'
     }),
     new CopyPlugin({
       patterns: [

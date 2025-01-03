@@ -1,0 +1,33 @@
+{
+  "name": "@jira-observability/es-notes-domain",
+  "version": "0.0.1",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "type": "commonjs",
+  "main": "./dist/index.cjs",
+  "typings": "./dist/index.d.ts",
+  "private": true,
+  "nx": {
+    "sourceRoot": "libs/domain/src",
+    "projectType": "library",
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "options": {
+          "outputPath": "libs/domain/dist",
+          "main": "libs/domain/src/index.ts",
+          "tsConfig": "libs/domain/tsconfig.lib.json",
+          "format": [
+            "cjs"
+          ],
+          "declarationRootDir": "libs/domain/src"
+        }
+      }
+    },
+    "name": "es-notes-domain"
+  }
+}

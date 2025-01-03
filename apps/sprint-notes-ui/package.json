@@ -6,11 +6,5 @@
     "name": "sprint-notes-ui",
     "projectType": "application",
     "sourceRoot": "apps/sprint-notes-ui/src"
-  },
-  "scripts": {
-    "start": "nx serve sprint-notes-ui",
-    "build": "nx build sprint-notes-ui",
-    "test": "nx test sprint-notes-ui",
-    "lint": "nx lint sprint-notes-ui"
   }
 }

@@ -1,4 +1,3 @@
-
 import { setupTracing } from './tracer';
 setupTracing('ea-notes-connect');
 
@@ -19,8 +18,10 @@ import nocache from 'nocache';
 import routes from './routes';
 import { info, initialiseExpressLogger } from './logger';
 
-import pg from 'pg';
-import longjohn from 'longjohn';
+import 'pg';
+import 'longjohn';
+import 'reflect-metadata';
+import { dataSource } from './data/datasource';
 
 // if(process.env.NODE_ENV !== 'production') {
 //   require('pg');
@@ -31,8 +32,8 @@ import longjohn from 'longjohn';
 const app = express();
 const fileNames = {
   descriptorFilename: path.join(__dirname, 'atlassian-connect.json'),
-    configFileName: path.join(__dirname, 'config.json')
-}
+  configFileName: path.join(__dirname, 'config.json'),
+};
 const addon = ace(app, undefined, undefined, fileNames);
 // See config.json
 const port = addon.config.port();
@@ -50,17 +51,21 @@ app.set('views', viewsDir);
 // Atlassian security policy requirements
 // http://go.atlassian.com/security-requirements-for-cloud-apps
 // HSTS must be enabled with a minimum age of at least one year
-app.use(helmet.hsts({
-  maxAge: 31536000,
-  includeSubDomains: false
-}));
-app.use(helmet.referrerPolicy({
-  policy: ['origin']
-}));
+app.use(
+  helmet.hsts({
+    maxAge: 31536000,
+    includeSubDomains: false,
+  })
+);
+app.use(
+  helmet.referrerPolicy({
+    policy: ['origin'],
+  })
+);
 
 // Include request parsers
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Include atlassian-connect-express middleware
@@ -69,7 +74,10 @@ app.use(addon.middleware());
 // Mount the static files directory
 const staticDir = path.join(__dirname, 'assets');
 app.use(express.static(staticDir));
-app.use('/atlassian-connect.json', express.static(fileNames.descriptorFilename));
+app.use(
+  '/atlassian-connect.json',
+  express.static(fileNames.descriptorFilename)
+);
 
 // Atlassian security policy requirements
 // http://go.atlassian.com/security-requirements-for-cloud-apps
@@ -78,9 +86,11 @@ app.use(nocache());
 // Wire up routes
 routes(app, addon);
 
-// Boot the HTTP server
-http.createServer(app).listen(port, () => {
-  info('App server running at http://' + os.hostname() + ':' + port);
-  // Enables auto registration/de-registration of app into a host in dev mode
-  // if (devEnv) addon.register();
+dataSource.initialize().then(() => {
+  // Boot the HTTP server
+  http.createServer(app).listen(port, () => {
+    info('App server running at http://' + os.hostname() + ':' + port);
+    // Enables auto registration/de-registration of app into a host in dev mode
+    // if (devEnv) addon.register();
+  });
 });
