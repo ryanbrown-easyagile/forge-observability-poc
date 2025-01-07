@@ -1,7 +1,7 @@
 import { setupTracing } from './tracer';
 setupTracing('ea-notes-connect');
 
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -14,12 +14,12 @@ import path from 'path';
 import os from 'os';
 import helmet from 'helmet';
 import nocache from 'nocache';
+import { fileURLToPath } from 'url';
 
 import routes from './routes';
-import { info, initialiseExpressLogger } from './logger';
+import { error, info, initialiseExpressLogger } from './logger';
 
 import 'pg';
-import 'longjohn';
 import 'reflect-metadata';
 import { dataSource } from './data/datasource';
 
@@ -30,10 +30,25 @@ import { dataSource } from './data/datasource';
 
 // Bootstrap Express and atlassian-connect-express
 const app = express();
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err) {
+    error(err);
+    res.status(500).send('Something went wrong');
+  } else {
+    next();
+  }
+});
+
+const __filename = fileURLToPath(import.meta.url);
+console.log(__filename);
+const __dirname = path.dirname(__filename); 
+console.log(__dirname);
+
 const fileNames = {
   descriptorFilename: path.join(__dirname, 'atlassian-connect.json'),
   configFileName: path.join(__dirname, 'config.json'),
 };
+console.log(fileNames);
 const addon = ace(app, undefined, undefined, fileNames);
 // See config.json
 const port = addon.config.port();

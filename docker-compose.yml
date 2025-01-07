@@ -9,8 +9,8 @@ services:
   #     - jira-observability
   connect:
     build:
-      context: .
-      dockerfile: apps/sprint-notes-connect/Dockerfile
+      context: ./apps/sprint-notes-connect
+      dockerfile: Dockerfile
     ports:
       - "3333:3333"
     environment:

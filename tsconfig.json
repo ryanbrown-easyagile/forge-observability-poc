@@ -8,9 +8,6 @@
     },
     {
       "path": "./apps/sprint-notes-connect"
-    },
-    {
-      "path": "./libs/domain"
     }
   ]
 }

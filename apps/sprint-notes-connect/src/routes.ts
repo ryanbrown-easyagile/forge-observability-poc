@@ -2,7 +2,8 @@ import { AddOn } from 'atlassian-connect-express';
 import { Express, Request } from 'express';
 import { createNote, getNotes } from './data/notes';
 import { AceRequest } from './types';
-import { Note } from '@jira-observability/es-notes-domain';
+import { Note } from './model/notes';
+import { error } from './logger';
 
 export default function routes(app: Express, addon: AddOn) {
     // Redirect root path to /atlassian-connect.json,
@@ -30,7 +31,7 @@ export default function routes(app: Express, addon: AddOn) {
     type NoteResponseBody = Note | {msg: string};
     type NoteRequestBody = {title: string, content: string};
 
-    app.get('/project/:projectKey/sprint/:sprintId/notes', addon.authenticate(), async (req, res) => {
+    app.get('/project/:projectKey/sprint/:sprintId/notes', /* addon.authenticate(), */ async (req, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project Key is required'});
         return;
@@ -47,10 +48,15 @@ export default function routes(app: Express, addon: AddOn) {
       }
       const aceRequest = req as AceRequest<NotePathParams, NoteResponseBody, unknown>;
       const clientKey = aceRequest.context.clientKey;
-      res.json(getNotes(clientKey, projectId, sprintId));
+      getNotes(clientKey, projectId, sprintId)
+        .then(notes => res.json(notes))
+        .catch(err => {
+          error(err);
+          res.status(500).json({msg: 'Failed to get notes'});
+        });
     });
 
-    app.put('/project/:projectKey/sprint/:sprintId/notes', addon.authenticate(), async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
+    app.post('/project/:projectKey/sprint/:sprintId/notes', /* addon.authenticate(), */ async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project ID is required'});
         return;
@@ -67,14 +73,18 @@ export default function routes(app: Express, addon: AddOn) {
       }
       const aceRequest = req as AceRequest<NotePathParams, NoteResponseBody, NoteRequestBody>;
       const clientKey = aceRequest.context.clientKey;
-      res.json(await createNote(new Note({
+      createNote(new Note({
         sprintId,
         clientKey,
         projectKey,
         title: req.body.title,
         content: req.body.content,
         dateCreated: new Date(),
-        author: aceRequest.context.userAccountId,
-      })));
+        author: aceRequest.context.userAccountId ?? 0,
+      })).then(note => res.json(note))
+      .catch(err => {
+        error(err);
+        res.status(500).json({msg: 'Failed to create note'});
+      });
     });
 }

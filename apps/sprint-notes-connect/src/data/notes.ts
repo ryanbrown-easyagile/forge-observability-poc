@@ -1,4 +1,4 @@
-import { NoteList, Note } from '@jira-observability/es-notes-domain';
+import { NoteList, Note } from '../model/notes';
 import { dataSource } from './datasource';
 
 export async function getNotes(clientKey: string, projectKey: string, sprintId: number): Promise<NoteList> {

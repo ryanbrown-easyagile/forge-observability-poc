@@ -17,20 +17,25 @@ function getLogger() {
   return _logger;
 }
 
-export function info(message: string) {
-  getLogger().info(message);
+export function info(message: string, ...optionalParams: any[]) {
+  getLogger().info(message, ...optionalParams);
 }
 
-export function error(message: string) {
-  getLogger().error(message);
+export function error(message: string | Error, ...optionalParams: any[]) {
+  if(message instanceof Error) {
+    getLogger().error(message);
+  }
+  else {
+    getLogger().error(message, ...optionalParams);
+  }
 }
 
-export function warn(message: string) {
-  getLogger().warn(message);
+export function warn(message: string, ...optionalParams: any[]) {
+  getLogger().warn(message, ...optionalParams);
 }
 
-export function debug(message: string) {
-  getLogger().debug(message);
+export function debug(message: string, ...optionalParams: any[]) {
+  getLogger().debug(message, ...optionalParams);
 }
 
 export function initialiseExpressLogger(app: Express) {

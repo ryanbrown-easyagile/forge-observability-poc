@@ -1,5 +1,5 @@
 import { SpanKind, Attributes } from '@opentelemetry/api';
-import { SamplingDecision, ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
+import { SamplingDecision } from '@opentelemetry/sdk-trace-node';
 import { Sampler, AlwaysOnSampler } from '@opentelemetry/sdk-trace-base';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
 import {
@@ -15,10 +15,10 @@ import {
 } from '@opentelemetry/semantic-conventions';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
-import { PeriodicExportingMetricReader, ConsoleMetricExporter } from '@opentelemetry/sdk-metrics';
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-grpc';
 import { containerDetector } from '@opentelemetry/resource-detector-container';
-import { ConsoleLogRecordExporter, SimpleLogRecordProcessor } from '@opentelemetry/sdk-logs';
+import { SimpleLogRecordProcessor } from '@opentelemetry/sdk-logs';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-grpc';
 
 export const setupTracing = (serviceName: string) => {

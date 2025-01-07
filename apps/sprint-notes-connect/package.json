@@ -2,16 +2,24 @@
   "name": "@jira-observability/sprint-notes-connect",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "package-build": "node scripts/create-package-json.cjs"
+  },
   "nx": {
     "name": "sprint-notes-connect",
     "projectType": "application",
     "sourceRoot": "apps/sprint-notes-connect/src",
     "targets": {
+      "package-build": {
+        "dependsOn": [
+          "build"
+        ]
+      },
       "serve": {
         "executor": "@nx/js:node",
         "defaultConfiguration": "development",
         "dependsOn": [
-          "build"
+          "package-build"
         ],
         "options": {
           "buildTarget": "sprint-notes-connect:build",
@@ -31,7 +39,61 @@
         "options": {
           "passWithNoTests": true
         }
+      },
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "main": "apps/sprint-notes-connect/src/main.ts",
+          "outputPath": "apps/sprint-notes-connect/dist",
+          "outputFileName": "main.js",
+          "tsConfig": "apps/sprint-notes-connect/tsconfig.app.json",
+          "platform": "node",
+          "format": [
+            "esm"
+          ],
+          "declarationRootDir": "apps/sprint-notes-connect/src",
+          "assets": [
+            {
+              "glob": "atlassian-connect.json",
+              "input": "apps/sprint-notes-connect",
+              "output": "./"
+            },
+            {
+              "glob": "config.json",
+              "input": "apps/sprint-notes-connect",
+              "output": "./"
+            },
+            {
+              "glob": "src/views/*",
+              "input": "apps/sprint-notes-connect",
+              "output": "./views/"
+            }
+          ]
+        },
+        "configurations": {
+          "development": {
+            "minify": false
+          },
+          "production": {
+            "minify": true
+          }
+        }
       }
     }
-  }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js"
+    }
+  },
+  "types": "./dist/main.d.ts",
+  "module": "./dist/main.js",
+  "type": "module",
+  "main": "./dist/main.js"
 }
