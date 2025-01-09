@@ -7,6 +7,9 @@ RUN addgroup --system sprint-notes-ui && \
 WORKDIR /usr/share/nginx/html
 
 RUN rm -rf ./*
-COPY apps/sprint-notes-ui/dist ./
-RUN sed -i '10i \\ttry_files $uri $uri/ /index.html;' /etc/nginx/conf.d/default.conf
+COPY dist ./
+COPY ./config/nginx.conf /etc/nginx/conf.d/default.conf
+
+# RUN sed -i '10i \\ttry_files $uri $uri/ /index.html;' /etc/nginx/conf.d/default.conf
+
 ENTRYPOINT ["nginx", "-g", "daemon off;"]

@@ -12,17 +12,11 @@ export default function routes(app: Express, addon: AddOn) {
         res.redirect('/atlassian-connect.json');
     });
 
-    // This is an example route used by "generalPages" module (see atlassian-connect.json).
-    // Verify that the incoming request is authenticated with Atlassian Connect.
-    app.get('/hello-world', addon.authenticate(), (req, res) => {
-        // Rendering a template is easy; the render method takes two params: the name of the component or template file, and its props.
-        // Handlebars and jsx are both supported, but please note that jsx changes require `npm run watch-jsx` in order to be picked up by the server.
+    app.get('/notes', addon.authenticate(), (req, res) => {
         res.render(
-          'hello-world.hbs', // change this to 'hello-world.jsx' to use the Atlaskit & React version
+          'notes.hbs', // change this to 'hello-world.jsx' to use the Atlaskit & React version
           {
-            title: 'Atlassian Connect'
-            //, issueId: req.query['issueId']
-            //, browserOnly: true // you can set this to disable server-side rendering for react views
+            title: 'Sprint Notes by Easy Agile'
           }
         );
     });
@@ -31,7 +25,7 @@ export default function routes(app: Express, addon: AddOn) {
     type NoteResponseBody = Note | {msg: string};
     type NoteRequestBody = {title: string, content: string};
 
-    app.get('/project/:projectKey/sprint/:sprintId/notes', /* addon.authenticate(), */ async (req, res) => {
+    app.get('/api/project/:projectKey/sprint/:sprintId/notes', addon.authenticate(), async (req, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project Key is required'});
         return;
@@ -56,7 +50,7 @@ export default function routes(app: Express, addon: AddOn) {
         });
     });
 
-    app.post('/project/:projectKey/sprint/:sprintId/notes', /* addon.authenticate(), */ async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
+    app.post('/api/project/:projectKey/sprint/:sprintId/notes', /* addon.authenticate(), */ async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project ID is required'});
         return;

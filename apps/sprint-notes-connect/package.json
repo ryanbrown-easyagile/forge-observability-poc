@@ -68,9 +68,9 @@
               "output": "./"
             },
             {
-              "glob": "src/views/*",
-              "input": "apps/sprint-notes-connect",
-              "output": "./views/"
+              "glob": "views/*",
+              "input": "apps/sprint-notes-connect/src/",
+              "output": "./"
             }
           ]
         },
