@@ -50,7 +50,7 @@ export default function routes(app: Express, addon: AddOn) {
         });
     });
 
-    app.post('/api/project/:projectKey/sprint/:sprintId/notes', /* addon.authenticate(), */ async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
+    app.post('/api/project/:projectKey/sprint/:sprintId/notes', addon.authenticate(),  async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project ID is required'});
         return;
