@@ -3,23 +3,24 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "package-build": "node scripts/create-package-json.cjs"
+    "build": "node scripts/create-package-json.cjs",
+    "ngrok": "ngrok start --config ngrok.yml --all"
   },
   "nx": {
     "name": "sprint-notes-connect",
     "projectType": "application",
     "sourceRoot": "apps/sprint-notes-connect/src",
     "targets": {
-      "package-build": {
+      "build": {
         "dependsOn": [
-          "build"
+          "esbuild"
         ]
       },
       "serve": {
         "executor": "@nx/js:node",
         "defaultConfiguration": "development",
         "dependsOn": [
-          "package-build"
+          "build"
         ],
         "options": {
           "buildTarget": "sprint-notes-connect:build",
@@ -40,7 +41,7 @@
           "passWithNoTests": true
         }
       },
-      "build": {
+      "esbuild": {
         "executor": "@nx/esbuild:esbuild",
         "outputs": [
           "{options.outputPath}"
