@@ -24,6 +24,7 @@
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
     "@testing-library/react": "15.0.6",
+    "@types/atlassian-connect-js": "^5.2.19",
     "@types/cookie-parser": "^1",
     "@types/hbs": "^4",
     "@types/jest": "^29.5.12",

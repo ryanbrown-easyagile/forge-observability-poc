@@ -47,7 +47,27 @@ services:
       - db:/data/postgres
     networks:
       - jira-observability
+  ngrok-connect:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    command:
+      - "start"
+      - "--all"
+      - "--config"
+      - "/etc/ngrok.yml"
+    volumes:
+      - ./config/ngrok/ngrok.connect.yml:/etc/ngrok.yml
+    ports:
+      - 4040:4040
+    depends_on:
+      - connect
+      - web
+    networks:
+      - jira-observability
 
+  # ################### #
+  # Observability stack #
+  # ################### #
   jaeger:
     image: jaegertracing/jaeger-collector:latest
     container_name: jaeger

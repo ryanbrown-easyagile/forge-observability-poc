@@ -4179,6 +4179,11 @@
 "@types/aria-query@^5.0.1":
   version "5.0.4"
 
+"@types/atlassian-connect-js@^5.2.19":
+  version "5.2.19"
+  resolved "https://registry.npmjs.org/@types/atlassian-connect-js/-/atlassian-connect-js-5.2.19.tgz"
+  integrity sha512-yguL32z0sil7KS/Ftjyn28Deau1D+RaSckxHh9vl8j3jBDNqN+8IdZhiHpL9d0VBIpF1UxOdfEmovAb0JFm6/A==
+
 "@types/aws-lambda@8.10.143":
   version "8.10.143"
   resolved "https://registry.npmjs.org/@types/aws-lambda/-/aws-lambda-8.10.143.tgz"

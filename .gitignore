@@ -34,6 +34,7 @@ yarn-error.log
 testem.log
 /typings
 ngrok.yml
+config/ngrok/ngrok.connect.yml
 
 # System Files
 .DS_Store

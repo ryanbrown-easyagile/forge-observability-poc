@@ -2,15 +2,19 @@
     "name": "Easy Agile Sprint Notes",
     "description": "Sprint Notes for Jira - by Easy Agile",
     "key": "com.easyagile.sprint.notes",
-    "baseUrl": "https://rbrown-eanotes.ngrok.io",
+    "baseUrl": "https://rbrown-eanotes.au.ngrok.io/",
     "vendor": {
         "name": "Easy Agile",
         "url": "https://www.easyagile.com"
     },
     "authentication": {
-        "type": "none"
+        "type": "jwt"
     },
-    "apiVersion": 1,
+    "lifecycle": {
+        "installed": "/installed",
+        "enabled": "/enabled"
+    },
+    "scopes": ["READ", "ACT_AS_USER"],
     "modules": {
         "generalPages": [
             {
@@ -20,6 +24,26 @@
                 "name": {
                     "value": "Greeting"
                 }
+            }
+        ],
+        "webSections": [
+            {
+                "key": "sprint-notes",
+                "location": "jira.agile.board.tools",
+                "name": {
+                    "value": "Sprint Notes"
+                }
+            }
+        ],
+        "jiraProjectPages": [
+            {
+                "key": "sprint-notes-web-panel",
+                "url": "/notes?projectId={project.id}&boardId={board.id}&sprintId={sprint.id}",
+                "location": "jira.project.sidebar.navigation",
+                "name": {
+                    "value": "Sprint Notes"
+                },
+                "weight": 0
             }
         ]
     }

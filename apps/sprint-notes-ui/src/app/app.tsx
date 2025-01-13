@@ -1,22 +1,21 @@
 import { Content, Main, PageLayout } from '@atlaskit/page-layout';
 import { NoteForm, NoteList } from '../note';
-import { useProjectId, useSprintId } from '../util/hooks';
+import { useAgileState } from '../util/hooks';
 import { Box, Stack } from '@atlaskit/primitives';
 import PageHeader from '@atlaskit/page-header';
 import { Events } from './events';
 
 export function App() {
-  const projectId = useProjectId();
-  const sprintId = useSprintId();
+  const agileState = useAgileState();
 
   const getContent = () => {
-    if (!projectId || !sprintId) {
+    if (!agileState.projectId || !agileState.sprintId) {
       return <div>Project or sprint not provided</div>;
     }
     return (
       <Stack>
-        <NoteForm projectId={projectId} sprintId={sprintId} />
-        <NoteList projectId={projectId} sprintId={sprintId} />
+        <NoteForm projectId={agileState.projectId} sprintId={agileState.sprintId} />
+        <NoteList projectId={agileState.projectId} sprintId={agileState.sprintId} />
       </Stack>
     );
   };
