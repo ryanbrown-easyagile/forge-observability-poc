@@ -1,5 +1,5 @@
 import { AddOn } from 'atlassian-connect-express';
-import { Express, Request } from 'express';
+import { Express, Request, Router } from 'express';
 import { createNote, getNotes } from './data/notes';
 import { AceRequest } from './types';
 import { Note } from './model/notes';
@@ -24,8 +24,10 @@ export default function routes(app: Express, addon: AddOn) {
     type NotePathParams = {projectKey: string, sprintId: string};
     type NoteResponseBody = Note | {msg: string};
     type NoteRequestBody = {title: string, content: string};
+    const apiRoute = Router();
+    apiRoute.use(addon.authenticate(true));    
 
-    app.get('/api/project/:projectKey/sprint/:sprintId/notes', addon.authenticate(), async (req, res) => {
+    apiRoute.get('/api/project/:projectKey/sprint/:sprintId/notes', async (req, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project Key is required'});
         return;
@@ -50,7 +52,7 @@ export default function routes(app: Express, addon: AddOn) {
         });
     });
 
-    app.post('/api/project/:projectKey/sprint/:sprintId/notes', addon.authenticate(),  async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
+    apiRoute.post('/api/project/:projectKey/sprint/:sprintId/notes',  async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project ID is required'});
         return;

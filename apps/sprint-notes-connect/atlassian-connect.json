@@ -1,50 +1,54 @@
 {
-    "name": "Easy Agile Sprint Notes",
-    "description": "Sprint Notes for Jira - by Easy Agile",
-    "key": "com.easyagile.sprint.notes",
-    "baseUrl": "https://rbrown-eanotes.au.ngrok.io/",
-    "vendor": {
-        "name": "Easy Agile",
-        "url": "https://www.easyagile.com"
-    },
-    "authentication": {
-        "type": "jwt"
-    },
-    "lifecycle": {
-        "installed": "/installed",
-        "enabled": "/enabled"
-    },
-    "scopes": ["READ", "ACT_AS_USER"],
-    "modules": {
-        "generalPages": [
-            {
-                "url": "/assests/helloworld.html",
-                "key": "hello-world",
-                "location": "system.top.navigation.bar",
-                "name": {
-                    "value": "Greeting"
-                }
-            }
-        ],
-        "webSections": [
-            {
-                "key": "sprint-notes",
-                "location": "jira.agile.board.tools",
-                "name": {
-                    "value": "Sprint Notes"
-                }
-            }
-        ],
-        "jiraProjectPages": [
-            {
-                "key": "sprint-notes-web-panel",
-                "url": "/notes?projectId={project.id}&boardId={board.id}&sprintId={sprint.id}",
-                "location": "jira.project.sidebar.navigation",
-                "name": {
-                    "value": "Sprint Notes"
-                },
-                "weight": 0
-            }
-        ]
-    }
+  "name": "Easy Agile Sprint Notes",
+  "description": "Sprint Notes for Jira - by Easy Agile",
+  "key": "com.easyagile.sprint.notes",
+  "baseUrl": "https://rbrown-eanotes.au.ngrok.io/",
+  "vendor": {
+    "name": "Easy Agile",
+    "url": "https://www.easyagile.com"
+  },
+  "authentication": {
+    "type": "jwt"
+  },
+  "lifecycle": {
+    "installed": "/installed",
+    "enabled": "/enabled"
+  },
+  "scopes": ["READ", "ACT_AS_USER"],
+  "modules": {
+    "webItems": [
+      {
+        "location": "jira.software.board.tools",
+        "weight": 200,
+        "styleClasses": ["webitem", "system-present-webitem"],
+        "context": "addon",
+        "target": {
+          "type": "dialogmodule",
+          "options": {
+            "key": "sprint-notes-dialog"
+          }
+        },
+        "tooltip": {
+          "value": "Sprint Notes"
+        },
+        "name": {
+          "value": "Sprint Notes"
+        },
+        "key": "web-item-board"
+      }
+    ],
+    "dialogs": [
+      {
+        "url": "/notes?boardId={board.id}",
+        "options": {
+          "chrome": false,
+          "header": {
+            "value": "Sprint Notes"
+          },
+          "size": "x-large"
+        },
+        "key": "sprint-notes-dialog"
+      }
+    ]
+  }
 }

@@ -2,20 +2,34 @@ import { Content, Main, PageLayout } from '@atlaskit/page-layout';
 import { NoteForm, NoteList } from '../note';
 import { useAgileState } from '../util/hooks';
 import { Box, Stack } from '@atlaskit/primitives';
-import PageHeader from '@atlaskit/page-header';
 import { Events } from './events';
+import { SprintSelector } from '../sprint/selector';
+import Spinner from '@atlaskit/spinner';
+import Heading from '@atlaskit/heading';
 
 export function App() {
   const agileState = useAgileState();
 
   const getContent = () => {
-    if (!agileState.projectId || !agileState.sprintId) {
-      return <div>Project or sprint not provided</div>;
+    if (!agileState.projectId || !agileState.sprintId || !agileState.boardId) {
+      return (
+        <Stack alignBlock="center" alignInline='center' space='space.100' grow='fill'>
+          <Spinner size="xlarge" />
+          <Heading size="medium">Loading your notes ...</Heading>
+        </Stack>
+      );
     }
     return (
       <Stack>
-        <NoteForm projectId={agileState.projectId} sprintId={agileState.sprintId} />
-        <NoteList projectId={agileState.projectId} sprintId={agileState.sprintId} />
+        <SprintSelector boardId={agileState.boardId} />
+        <NoteForm
+          projectId={agileState.projectId}
+          sprintId={agileState.sprintId}
+        />
+        <NoteList
+          projectId={agileState.projectId}
+          sprintId={agileState.sprintId}
+        />
       </Stack>
     );
   };
@@ -24,10 +38,7 @@ export function App() {
     <PageLayout>
       <Content>
         <Main>
-          <Box padding="space.400">
-            <PageHeader>Sprint Notes</PageHeader>
-            {getContent()}
-          </Box>
+          <Box padding="space.400">{getContent()}</Box>
         </Main>
       </Content>
       <Events />

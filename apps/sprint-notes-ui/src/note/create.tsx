@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useToastsDispatch } from '../toast/ToastProvider';
 import { NoteType } from './type';
 import Form, { Field, FormApi, FormFooter } from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
@@ -7,9 +5,12 @@ import TextArea from '@atlaskit/textarea';
 import Button from '@atlaskit/button/new';
 import { emitNoteCreated } from './event';
 import { emitErrorOccurred } from '../util/errorEvent';
+import { useAtlassianJWT } from '../util/hooks';
+import { useState } from 'react';
+import { useSprintChangedListener } from '../sprint';
 
 type NoteFormProps = {
-  sprintId: string;
+  sprintId: number;
   projectId: string;
 };
 
@@ -19,12 +20,21 @@ type NoteFormState = {
 }
 
 export function NoteForm(props: NoteFormProps) {
-
+  const [sprintId, setSprintId] = useState(props.sprintId);
+  useSprintChangedListener((sprintId) => {
+    setSprintId(sprintId);
+  });
+  const jwt = useAtlassianJWT();
   const handleSubmit = (formState: NoteFormState, form: FormApi<NoteFormState>) => {
-    fetch(`/api/project/${props.projectId}/sprint/${props.sprintId}/notes`, {
+    if(!jwt) {
+      return;
+    }
+
+    fetch(`/api/project/${props.projectId}/sprint/${sprintId}/notes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `JWT ${jwt}`,
       },
       body: JSON.stringify({ title: formState.title, content: formState.content }),
     })
