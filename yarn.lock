@@ -210,7 +210,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@atlaskit/icon@npm:^23.0.0, @atlaskit/icon@npm:^23.1.0, @atlaskit/icon@npm:^23.2.0":
+"@atlaskit/icon@npm:^23.0.0, @atlaskit/icon@npm:^23.1.0":
   version: 23.2.0
   resolution: "@atlaskit/icon@npm:23.2.0"
   dependencies:
@@ -221,6 +221,20 @@ __metadata:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: 10c0/cba38d937e8b3d2fb79338762591f9b18fb5ac27e7b04574ba381999709fe4495398cff5bdbbb9b64083dc02ad6245cb0b2a321e18fe2d5384b3c6ef9056a886
+  languageName: node
+  linkType: hard
+
+"@atlaskit/icon@npm:^23.3.1":
+  version: 23.3.1
+  resolution: "@atlaskit/icon@npm:23.3.1"
+  dependencies:
+    "@atlaskit/platform-feature-flags": "npm:^0.3.0"
+    "@atlaskit/tokens": "npm:^3.0.0"
+    "@babel/runtime": "npm:^7.0.0"
+    "@emotion/react": "npm:^11.7.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10c0/63b79ff6ce666e0fbca9b2eca13e30cd6a465e84271ad0a3c494696584a60c167748152925466a323e4dda2a420c011b3c7defc7eeee5d1abf7e0045383c5470
   languageName: node
   linkType: hard
 
@@ -3461,7 +3475,7 @@ __metadata:
     "@atlaskit/flag": "npm:^15.8.13"
     "@atlaskit/form": "npm:^11.0.0"
     "@atlaskit/heading": "npm:^4.0.0"
-    "@atlaskit/icon": "npm:^23.2.0"
+    "@atlaskit/icon": "npm:^23.3.1"
     "@atlaskit/link": "npm:^2.0.1"
     "@atlaskit/page-header": "npm:^11.0.2"
     "@atlaskit/page-layout": "npm:^3.11.5"

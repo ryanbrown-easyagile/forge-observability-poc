@@ -1,8 +1,12 @@
-import { Box, Inline } from '@atlaskit/primitives';
+import { Inline } from '@atlaskit/primitives';
 import Heading from '@atlaskit/heading';
-import Button from '@atlaskit/button/new';
+import Button, { IconButton } from '@atlaskit/button/new';
 import { useEffect, useState } from 'react';
-import { emitSprintChanged, useSprintChangedListener } from './events';
+import { emitSprintChanged } from './events';
+import ChevronRightIcon from '@atlaskit/icon/utility/chevron-right';
+import ChevronLeftIcon from '@atlaskit/icon/utility/chevron-left';
+import Icon from '@atlaskit/icon/dist/types/components/icon-new';
+
 type Sprint = {
   id: number;
   self: string;
@@ -51,7 +55,8 @@ export function SprintSelector(props: { boardId: string }) {
   useEffect(() => {
     getSprints(props.boardId).then((sprints) => {
       if (sprints.length > 0) {
-        const sprint = sprints.find((sprint) => sprint.state === 'active') ?? sprints[0];
+        const sprint =
+          sprints.find((sprint) => sprint.state === 'active') ?? sprints[0];
         setSelectedSprint(sprint);
         emitSprintChanged(sprint.id);
       }
@@ -78,21 +83,23 @@ export function SprintSelector(props: { boardId: string }) {
 
   return (
     <Inline space="space.100" grow="fill" spread="space-between">
-      <Button
+      <IconButton
         onClick={navToPreviousSprint}
         isDisabled={selectedSprint?.previousSprint === null}
-        appearance='discovery'
-      >
-        Previous
-      </Button>
-      <Heading size='large' as='h1'>{selectedSprint?.name}</Heading>
-      <Button
+        appearance="subtle"
+        icon={ChevronLeftIcon}
+        label="Previous Sprint"
+      ></IconButton>
+      <Heading size="large" as="h1">
+        {selectedSprint?.name}
+      </Heading>
+      <IconButton
         onClick={navToNextSprint}
         isDisabled={selectedSprint?.nextSprint === null}
-        appearance='discovery'
-      >
-        Next
-      </Button>
+        appearance="subtle"
+        icon={ChevronRightIcon}
+        label="Next Sprint"
+      ></IconButton>
     </Inline>
   );
 }

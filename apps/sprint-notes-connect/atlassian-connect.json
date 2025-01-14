@@ -34,7 +34,12 @@
         "name": {
           "value": "Sprint Notes"
         },
-        "key": "web-item-board"
+        "key": "web-item-board",
+        "icon": {
+          "width": 24,
+          "height": 24,
+          "url": "/assets/img/icon.svg"
+        }
       }
     ],
     "dialogs": [

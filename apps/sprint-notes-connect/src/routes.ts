@@ -25,9 +25,10 @@ export default function routes(app: Express, addon: AddOn) {
     type NoteResponseBody = Note | {msg: string};
     type NoteRequestBody = {title: string, content: string};
     const apiRoute = Router();
-    apiRoute.use(addon.authenticate(true));    
+    apiRoute.use(addon.authenticate(true));   
+    app.use('/api', apiRoute); 
 
-    apiRoute.get('/api/project/:projectKey/sprint/:sprintId/notes', async (req, res) => {
+    apiRoute.get('/project/:projectKey/sprint/:sprintId/notes', async (req, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project Key is required'});
         return;
@@ -52,7 +53,7 @@ export default function routes(app: Express, addon: AddOn) {
         });
     });
 
-    apiRoute.post('/api/project/:projectKey/sprint/:sprintId/notes',  async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
+    apiRoute.post('/project/:projectKey/sprint/:sprintId/notes',  async (req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>, res) => {
       if (!req.params.projectKey) {
         res.status(400).json({msg: 'Project ID is required'});
         return;

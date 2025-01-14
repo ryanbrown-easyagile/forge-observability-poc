@@ -9,6 +9,9 @@ export default defineConfig({
     port: 4200,
     host: 'localhost',
   },
+  assetsInclude: [
+    "src/**/*.svg",
+  ],
   preview: {
     port: 4300,
     host: 'localhost',
