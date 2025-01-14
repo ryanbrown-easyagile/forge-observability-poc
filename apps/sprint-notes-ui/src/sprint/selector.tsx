@@ -1,11 +1,10 @@
 import { Inline } from '@atlaskit/primitives';
 import Heading from '@atlaskit/heading';
-import Button, { IconButton } from '@atlaskit/button/new';
+import { IconButton } from '@atlaskit/button/new';
 import { useEffect, useState } from 'react';
 import { emitSprintChanged } from './events';
 import ChevronRightIcon from '@atlaskit/icon/utility/chevron-right';
 import ChevronLeftIcon from '@atlaskit/icon/utility/chevron-left';
-import Icon from '@atlaskit/icon/dist/types/components/icon-new';
 
 type Sprint = {
   id: number;

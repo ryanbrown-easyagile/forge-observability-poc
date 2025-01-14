@@ -1,4 +1,4 @@
-import { SpanKind, Attributes } from '@opentelemetry/api';
+import { SpanKind, Attributes, context, trace } from '@opentelemetry/api';
 import { SamplingDecision } from '@opentelemetry/sdk-trace-node';
 import { Sampler, AlwaysOnSampler } from '@opentelemetry/sdk-trace-base';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc';
@@ -20,8 +20,11 @@ import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-grpc';
 import { containerDetector } from '@opentelemetry/resource-detector-container';
 import { SimpleLogRecordProcessor } from '@opentelemetry/sdk-logs';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-grpc';
+import { B3Propagator } from '@opentelemetry/propagator-b3';
+
 
 export const setupTracing = (serviceName: string) => {
+  
   const sdk = new NodeSDK({
     traceExporter: new OTLPTraceExporter({}),
     // traceExporter: new ConsoleSpanExporter(),
@@ -54,7 +57,7 @@ export const setupTracing = (serviceName: string) => {
     }),
     logRecordProcessors: [
       // new SimpleLogRecordProcessor(new ConsoleLogRecordExporter())
-      new SimpleLogRecordProcessor(new OTLPLogExporter())
+      new SimpleLogRecordProcessor(new OTLPLogExporter()),
     ],
     resourceDetectors: [
       containerDetector,
@@ -63,8 +66,8 @@ export const setupTracing = (serviceName: string) => {
       osDetector,
       processDetector,
     ],
+    textMapPropagator: new B3Propagator(),
   });
-
   sdk.start();
 };
 
@@ -96,4 +99,21 @@ function ignoreHealthCheck(
   return (
     spanKind !== SpanKind.SERVER || attributes[ATTR_HTTP_ROUTE] !== '/health'
   );
+}
+
+type TraceInfo = {
+  traceId: string;
+  spanId: string;
+  traceFlags: number;
+}
+export function getCurrentTraceInfo() : TraceInfo | undefined {
+  const activeSpan = trace.getSpan(context.active());
+  if (!activeSpan) {
+    return undefined;
+  }
+  const traceId = activeSpan.spanContext().traceId;
+  const spanId = activeSpan.spanContext().spanId;
+  const traceFlags = activeSpan.spanContext().traceFlags;
+
+  return { traceId, spanId, traceFlags };
 }

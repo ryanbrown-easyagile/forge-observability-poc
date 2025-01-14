@@ -4,6 +4,8 @@ import { createNote, getNotes } from './data/notes';
 import { AceRequest } from './types';
 import { Note } from './model/notes';
 import { error } from './logger';
+import { get } from 'http';
+import { getCurrentTraceInfo } from './tracer';
 
 export default function routes(app: Express, addon: AddOn) {
     // Redirect root path to /atlassian-connect.json,
@@ -13,10 +15,14 @@ export default function routes(app: Express, addon: AddOn) {
     });
 
     app.get('/notes', addon.authenticate(), (req, res) => {
+        const traceInfo = getCurrentTraceInfo();
         res.render(
           'notes.hbs', // change this to 'hello-world.jsx' to use the Atlaskit & React version
           {
-            title: 'Sprint Notes by Easy Agile'
+            title: 'Sprint Notes by Easy Agile',
+            traceId: traceInfo?.traceId,
+            spanId: traceInfo?.spanId,
+            traceFlags: traceInfo?.traceFlags.toString().padStart(2, '0'),
           }
         );
     });
