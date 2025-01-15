@@ -24,7 +24,7 @@
   "description": "Spanmetrics way of demo application view.",
   "author": {
     "name": "devrimdemiroz"
-    },
+  },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -95,9 +95,7 @@
       "options": {
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -220,9 +218,7 @@
         "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
+          "calcs": ["mean"],
           "fields": "",
           "values": false
         },
@@ -298,9 +294,7 @@
         "minVizWidth": 0,
         "orientation": "vertical",
         "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
+          "calcs": ["mean"],
           "fields": "",
           "values": false
         },
@@ -473,9 +467,7 @@
       "options": {
         "footer": {
           "fields": "",
-          "reducer": [
-            "sum"
-          ],
+          "reducer": ["sum"],
           "show": false
         },
         "showHeader": true,
@@ -541,9 +533,7 @@
             "alias": "bRate",
             "mode": "reduceRow",
             "reduce": {
-              "include": [
-                "Rate"
-              ],
+              "include": ["Rate"],
               "reducer": "sum"
             }
           }
@@ -554,9 +544,7 @@
             "alias": "eRate",
             "mode": "reduceRow",
             "reduce": {
-              "include": [
-                "Error Rate"
-              ],
+              "include": ["Error Rate"],
               "reducer": "sum"
             }
           }
@@ -678,9 +666,7 @@
       "options": {
         "orientation": "auto",
         "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
+          "calcs": ["lastNotNull"],
           "fields": "",
           "values": false
         },
@@ -795,9 +781,7 @@
         "minVizWidth": 0,
         "orientation": "horizontal",
         "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
+          "calcs": ["mean"],
           "fields": "",
           "values": false
         },
@@ -892,12 +876,7 @@
       "interval": "5m",
       "options": {
         "legend": {
-          "calcs": [
-            "mean",
-            "logmin",
-            "max",
-            "delta"
-          ],
+          "calcs": ["mean", "logmin", "max", "delta"],
           "displayMode": "table",
           "placement": "bottom",
           "showLegend": true

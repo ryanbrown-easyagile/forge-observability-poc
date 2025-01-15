@@ -1,9 +1,9 @@
-version: "2"
+version: '2'
 authtoken: YOUR AUTHTOKEN
 tunnels:
   connect:
-    proto: "http"
-    addr: "http://connect:3333"
+    proto: 'http'
+    addr: 'http://connect:3333'
     schemes:
       - https
-    subdomain: "YOUR SUBDOMAIN"
+    subdomain: 'YOUR SUBDOMAIN'

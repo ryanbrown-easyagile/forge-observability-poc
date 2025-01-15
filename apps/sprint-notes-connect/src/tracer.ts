@@ -22,9 +22,7 @@ import { SimpleLogRecordProcessor } from '@opentelemetry/sdk-logs';
 import { OTLPLogExporter } from '@opentelemetry/exporter-logs-otlp-grpc';
 import { B3Propagator } from '@opentelemetry/propagator-b3';
 
-
 export const setupTracing = (serviceName: string) => {
-  
   const sdk = new NodeSDK({
     traceExporter: new OTLPTraceExporter({}),
     // traceExporter: new ConsoleSpanExporter(),
@@ -105,8 +103,8 @@ type TraceInfo = {
   traceId: string;
   spanId: string;
   traceFlags: number;
-}
-export function getCurrentTraceInfo() : TraceInfo | undefined {
+};
+export function getCurrentTraceInfo(): TraceInfo | undefined {
   const activeSpan = trace.getSpan(context.active());
   if (!activeSpan) {
     return undefined;

@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import * as ReactDOM from 'react-dom/client';
 import App from './app/app';
 import { initTracing } from './app/tracing';
-import "@atlaskit/css-reset";
+import '@atlaskit/css-reset';
 
 initTracing('ea-notes-ui');
 

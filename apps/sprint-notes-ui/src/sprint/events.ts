@@ -1,3 +1,4 @@
-import { createEvent } from "react-event-hook";
+import { createEvent } from 'react-event-hook';
 
-export const { useSprintChangedListener, emitSprintChanged } = createEvent("sprintChanged")<number>();
+export const { useSprintChangedListener, emitSprintChanged } =
+  createEvent('sprintChanged')<number>();

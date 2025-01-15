@@ -22,10 +22,9 @@ export function info(message: string, ...optionalParams: any[]) {
 }
 
 export function error(message: string | Error, ...optionalParams: any[]) {
-  if(message instanceof Error) {
+  if (message instanceof Error) {
     getLogger().error(message);
-  }
-  else {
+  } else {
     getLogger().error(message, ...optionalParams);
   }
 }

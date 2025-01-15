@@ -3,10 +3,10 @@ import Heading from '@atlaskit/heading';
 import { NoteType } from './type';
 
 type NoteProps = {
-    note: NoteType
-}
+  note: NoteType;
+};
 
-export function Note({note} : NoteProps) {
+export function Note({ note }: NoteProps) {
   return (
     <Stack>
       <Heading size="medium" as="h2">

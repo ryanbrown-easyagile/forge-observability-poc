@@ -13,7 +13,12 @@ export function App() {
   const getContent = () => {
     if (!agileState.projectId || !agileState.sprintId || !agileState.boardId) {
       return (
-        <Stack alignBlock="center" alignInline='center' space='space.100' grow='fill'>
+        <Stack
+          alignBlock="center"
+          alignInline="center"
+          space="space.100"
+          grow="fill"
+        >
           <Spinner size="xlarge" />
           <Heading size="medium">Loading your notes ...</Heading>
         </Stack>

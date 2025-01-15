@@ -13,15 +13,15 @@ receivers:
       http:
         cors:
           allowed_origins:
-            - "http://*"
-            - "https://*"
+            - 'http://*'
+            - 'https://*'
 
 exporters:
   logging:
     loglevel: info
   debug:
   otlp:
-    endpoint: "jaeger:4317"
+    endpoint: 'jaeger:4317'
     tls:
       insecure: true
       insecure_skip_verify: true
@@ -54,22 +54,22 @@ exporters:
       randomization_factor: 0.5
     dataset: logs
   otlp/traces:
-    endpoint: "data-prepper:21890"
+    endpoint: 'data-prepper:21890'
     tls:
       insecure: true
       insecure_skip_verify: true
   otlp/metrics:
-    endpoint: "data-prepper:21891"
+    endpoint: 'data-prepper:21891'
     tls:
       insecure: true
       insecure_skip_verify: true
   otlp/logs:
-    endpoint: "data-prepper:21892"
+    endpoint: 'data-prepper:21892'
     tls:
       insecure: true
       insecure_skip_verify: true
   otlphttp/prometheus:
-    endpoint: "http://prometheus:9090/api/v1/otlp"
+    endpoint: 'http://prometheus:9090/api/v1/otlp'
     tls:
       insecure: true
 

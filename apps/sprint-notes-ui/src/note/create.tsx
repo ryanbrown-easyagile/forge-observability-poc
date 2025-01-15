@@ -15,9 +15,9 @@ type NoteFormProps = {
 };
 
 type NoteFormState = {
-    title: string;
-    content: string;
-}
+  title: string;
+  content: string;
+};
 
 export function NoteForm(props: NoteFormProps) {
   const [sprintId, setSprintId] = useState(props.sprintId);
@@ -25,8 +25,11 @@ export function NoteForm(props: NoteFormProps) {
     setSprintId(sprintId);
   });
   const jwt = useAtlassianJWT();
-  const handleSubmit = (formState: NoteFormState, form: FormApi<NoteFormState>) => {
-    if(!jwt) {
+  const handleSubmit = (
+    formState: NoteFormState,
+    form: FormApi<NoteFormState>
+  ) => {
+    if (!jwt) {
       return;
     }
 
@@ -36,14 +39,17 @@ export function NoteForm(props: NoteFormProps) {
         'Content-Type': 'application/json',
         Authorization: `JWT ${jwt}`,
       },
-      body: JSON.stringify({ title: formState.title, content: formState.content }),
+      body: JSON.stringify({
+        title: formState.title,
+        content: formState.content,
+      }),
     })
       .then((response) => response.json())
       .then((createdNote: NoteType) => {
         emitNoteCreated(createdNote);
         form.restart({
-            title: '',
-            content: '',
+          title: '',
+          content: '',
         });
       })
       .catch((error) => {

@@ -14,25 +14,25 @@ type NoteRow = SprintItemRow & {
   dateCreated: Date;
 };
 
-@Entity({name: 'notes'})
+@Entity({ name: 'notes' })
 export class Note extends SprintItem {
   @PrimaryGeneratedColumn()
   id!: string;
 
-  @Column("varchar")
+  @Column('varchar')
   title!: string;
 
-  @Column("varchar")
+  @Column('varchar')
   content!: string;
 
-  @Column("varchar")
+  @Column('varchar')
   author!: string;
 
-  @Column("date")
+  @Column('date')
   dateCreated!: Date;
 
   constructor(row?: NoteRow) {
-    if(!row) {
+    if (!row) {
       super();
       return;
     }

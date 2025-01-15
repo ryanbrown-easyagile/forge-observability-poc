@@ -35,6 +35,7 @@ testem.log
 /typings
 ngrok.yml
 config/ngrok/ngrok.connect.yml
+config/ngrok/ngrok.otel.yml
 config/forge/.env
 
 # System Files

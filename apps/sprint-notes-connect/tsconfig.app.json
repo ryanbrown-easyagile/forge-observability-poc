@@ -8,7 +8,7 @@
     "moduleResolution": "bundler",
     "tsBuildInfoFile": "out-tsc/sprint-notes-connect/tsconfig.app.tsbuildinfo",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
+    "experimentalDecorators": true
   },
   "include": ["src/**/*.ts"],
   "exclude": [

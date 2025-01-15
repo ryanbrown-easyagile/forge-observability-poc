@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "build": "node scripts/create-package-json.cjs",
-    "ngrok": "ngrok start --config ngrok.yml --all"
+    "ngrok": "ngrok start --config ngrok.yml --all",
+    "prettier": "prettier ."
   },
   "nx": {
     "name": "sprint-notes-connect",

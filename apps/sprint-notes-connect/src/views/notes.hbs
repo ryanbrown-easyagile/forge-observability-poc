@@ -3,20 +3,20 @@
     <meta charset='utf-8' />
     <meta http-equiv='X-UA-Compatible' content='IE=edge' />
     <script>var loadStartTime = new Date().getTime();</script>
-    <script src="https://connect-cdn.atl-paas.net/all.js" data-options="margin:false"></script>
+    <script
+      src='https://connect-cdn.atl-paas.net/all.js'
+      data-options='margin:false'
+    ></script>
     <title>{{title}}</title>
     <script type='module' src='/assets/index.js'></script>
-    <link rel="stylesheet" href="/assets/index.css">
+    <link rel='stylesheet' href='/assets/index.css' />
     <style>
-      body {
-        border: 1px solid var(--ds-border-accent-gray, #dfe1e6);
-        height: auto;
-        width: auto;
-      }
+      body { border: 1px solid var(--ds-border-accent-gray, #dfe1e6); height:
+      auto; width: auto; }
     </style>
     <meta
-      name="traceparent"
-      content="00-{{traceId}}-{{spanId}}-{{traceFlags}}"
+      name='traceparent'
+      content='00-{{traceId}}-{{spanId}}-{{traceFlags}}'
     />
   </head>
   <body>
@@ -24,6 +24,6 @@
       window.AP.theming.initializeTheming();
     </script>
     <div id='root'></div>
-    <div id="ac-iframe-options" data-options="margin:false"></div>
+    <div id='ac-iframe-options' data-options='margin:false'></div>
   </body>
 </html>

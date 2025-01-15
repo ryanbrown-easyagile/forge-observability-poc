@@ -14,7 +14,7 @@ class WinstonLogger extends AbstractLogger {
     logMessage: LogMessage | LogMessage[],
     _queryRunner?: QueryRunner
   ) {
-    console.log("Writing log", logMessage);
+    console.log('Writing log', logMessage);
     const messages = this.prepareLogMessages(logMessage, {
       highlightSql: false,
     });
@@ -56,7 +56,6 @@ class WinstonLogger extends AbstractLogger {
       }
     }
   }
-  
 }
 
 export const dataSource: DataSource = new DataSource({

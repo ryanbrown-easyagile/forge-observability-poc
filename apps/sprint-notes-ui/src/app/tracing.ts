@@ -20,7 +20,7 @@ import {
   LoggerProvider,
 } from '@opentelemetry/sdk-logs';
 
-const observabilityHost = 'http://localhost:4318';
+const observabilityHost = 'https://rbrown-otel.ngrok.app';
 
 export function initTracing(serviceName: string) {
   const exporter = new OTLPTraceExporter({
@@ -60,7 +60,7 @@ export function initTracing(serviceName: string) {
     )
   );
   logs.setGlobalLoggerProvider(loggerProvider);
-  
+
   registerInstrumentations({
     meterProvider: meterProvider,
     loggerProvider,
@@ -80,19 +80,19 @@ export function initTracing(serviceName: string) {
 }
 
 export function logError(message: string) {
-  logs.getLogger("ea-notes-ui", "1.0.0").emit({
+  logs.getLogger('ea-notes-ui', '1.0.0').emit({
     body: message,
     severityNumber: SeverityNumber.ERROR,
-    severityText: 'ERROR'
+    severityText: 'ERROR',
   });
 }
 
-const counters : { [key: string]: Counter } = {};
+const counters: { [key: string]: Counter } = {};
 
 export function increaseCounterMetric(name: string) {
   const meter = metrics.getMeter('ea-notes-ui', '1.0.0');
   let counter = counters[name];
-  if(!counter) {
+  if (!counter) {
     counter = meter.createCounter(name);
     counters[name] = counter;
   }
