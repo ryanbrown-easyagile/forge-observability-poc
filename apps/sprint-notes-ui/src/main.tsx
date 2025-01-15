@@ -5,7 +5,7 @@ import App from './app/app';
 import { initTracing } from './app/tracing';
 import "@atlaskit/css-reset";
 
-initTracing('sprint-notes-ui');
+initTracing('ea-notes-ui');
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

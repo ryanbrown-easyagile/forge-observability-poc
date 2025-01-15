@@ -28,6 +28,14 @@ services:
         condition: service_started
     networks:
       - jira-observability
+  connect-on-forge:
+    build:
+      context: ./apps/sprint-notes-connect-on-forge
+      dockerfile: Dockerfile
+    env_file:
+      - config/forge/.env
+    networks:
+      - jira-observability
   db:
     image: postgres:latest
     restart: always

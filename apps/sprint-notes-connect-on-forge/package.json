@@ -1,0 +1,13 @@
+{
+  "name": "@jira-observability/sprint-notes-connect-on-forge",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "build": "copyfiles manifest.yml dist"
+  },
+  "nx": {
+    "name": "sprint-notes-connect-on-forge",
+    "projectType": "application",
+    "sourceRoot": "apps/sprint-notes-connect-on-forge/src"
+  }
+}

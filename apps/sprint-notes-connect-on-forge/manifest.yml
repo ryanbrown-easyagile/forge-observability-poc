@@ -1,0 +1,48 @@
+app:
+  id: ari:cloud:ecosystem::app/a4ee431d-357e-4cd9-b152-c9381e854c7e
+  connect:
+    key: com.easyagile.sprint.notes
+    remote: connect
+    authentication: jwt
+  runtime:
+    name: nodejs20.x
+remotes:
+  - key: connect
+    baseUrl: https://rbrown-eanotes.au.ngrok.io/
+connectModules:
+  jira:lifecycle:
+    - key: lifecycle-events
+      installed: /installed
+      enabled: /enabled
+  jira:webItems:
+    - location: jira.software.board.tools
+      weight: 200
+      styleClasses:
+        - webitem
+        - system-present-webitem
+      context: addon
+      target:
+        type: dialogmodule
+        options:
+          key: sprint-notes-dialog
+      tooltip:
+        value: Sprint Notes
+      name:
+        value: Sprint Notes
+      key: web-item-board
+      icon:
+        width: 24
+        height: 24
+        url: /assets/img/icon.svg
+  jira:dialogs:
+    - url: /notes?boardId={board.id}
+      options:
+        chrome: false
+        header:
+          value: Sprint Notes
+        size: x-large
+      key: sprint-notes-dialog
+permissions:
+  scopes:
+    - read:connect-jira
+    - act-as-user:connect-jira

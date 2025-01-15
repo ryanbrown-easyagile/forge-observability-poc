@@ -5,6 +5,7 @@ import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import { token } from '@atlaskit/tokens';
 import { useNoteCreatedListener } from '../note';
+import { logError } from './tracing';
 
 type AppFlag = {
   id: number;
@@ -23,7 +24,7 @@ export function Events() {
     } else {
       errorMessage = error;
     }
-    console.error(errorMessage);
+    logError(errorMessage);
     setFlags(
       flags.concat({
         id: flags.length,

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { emitSprintChanged } from './events';
 import ChevronRightIcon from '@atlaskit/icon/utility/chevron-right';
 import ChevronLeftIcon from '@atlaskit/icon/utility/chevron-left';
+import { increaseCounterMetric } from '../app/tracing';
 
 type Sprint = {
   id: number;
@@ -64,6 +65,7 @@ export function SprintSelector(props: { boardId: string }) {
 
   const navToNextSprint = () => {
     let nextSprint: Sprint | undefined = undefined;
+    increaseCounterMetric('sprint_nav_next');
     if (selectedSprint?.nextSprint) {
       nextSprint = selectedSprint?.nextSprint;
       emitSprintChanged(nextSprint.id);
@@ -73,6 +75,7 @@ export function SprintSelector(props: { boardId: string }) {
 
   const navToPreviousSprint = () => {
     let previousSprint: Sprint | undefined = undefined;
+    increaseCounterMetric('sprint_nav_previous');
     if (selectedSprint?.previousSprint) {
       previousSprint = selectedSprint?.previousSprint;
       emitSprintChanged(previousSprint.id);
