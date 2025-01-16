@@ -1,23 +1,28 @@
-import Fastify from 'fastify';
-import { app } from './app/app';
+import { setupTracing } from './tracer';
+setupTracing('ea-notes-remote');
 
-const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+import express from 'express';
 
-// Instantiate Fastify with some config
-const server = Fastify({
-  logger: true,
-});
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import { routes } from './app/routes/routes';
 
-// Register your application as a normal plugin.
-server.register(app);
 
-// Start listening.
-server.listen({ port, host }, (err) => {
-  if (err) {
-    server.log.error(err);
-    process.exit(1);
-  } else {
-    console.log(`[ ready ] http://${host}:${port}`);
-  }
+import 'pg';
+import 'reflect-metadata';
+import { dataSource } from './data/datasource';
+import { info } from './logger';
+
+const port = process.env.PORT ? Number(process.env.PORT) : 6102;
+
+const app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+routes(app);
+
+dataSource.initialize().then(() => {
+  app.listen(port, () => {
+    info('App server running on port: ' + port);
+  });
 });

@@ -28,6 +28,27 @@ services:
         condition: service_started
     networks:
       - jira-observability
+  remote:
+    build:
+      context: ./apps/sprint-notes-remote
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: 3333
+      DATABASE_URL: postgres://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-LollyGobbleBlissBombs}@db:5432/${POSTGRES_DB:-notes}
+      OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT}
+      OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: ${OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE}
+      OTEL_RESOURCE_ATTRIBUTES: ${OTEL_RESOURCE_ATTRIBUTES}
+      OTEL_SERVICE_NAME: ea-notes-remote
+    ports:
+      - '3334:3333'
+    depends_on:
+      otelcol:
+        condition: service_started
+      db:
+        condition: service_started
+    networks:
+      - jira-observability
   connect-on-forge:
     build:
       context: ./apps/sprint-notes-connect-on-forge

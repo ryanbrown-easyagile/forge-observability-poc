@@ -2,12 +2,20 @@
   "name": "@jira-observability/sprint-notes-remote",
   "version": "0.0.1",
   "private": true,
+  "scripts": {
+    "build": "node scripts/create-package-json.cjs"
+  },
   "nx": {
     "name": "sprint-notes-remote",
     "projectType": "application",
     "sourceRoot": "apps/sprint-notes-remote/src",
     "targets": {
       "build": {
+        "dependsOn": [
+          "esbuild"
+        ]
+      },
+      "esbuild": {
         "executor": "@nx/esbuild:esbuild",
         "outputs": [
           "{options.outputPath}"

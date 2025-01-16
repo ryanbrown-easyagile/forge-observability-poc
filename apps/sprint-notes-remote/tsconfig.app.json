@@ -2,20 +2,15 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "out-tsc/sprint-notes-remote",
-    "module": "nodenext",
-    "types": [
-      "node"
-    ],
+    "module": "ESNext",
+    "types": ["node", "express"],
     "rootDir": "src",
-    "moduleResolution": "nodenext",
-    "tsBuildInfoFile": "out-tsc/sprint-notes-remote/tsconfig.app.tsbuildinfo"
+    "moduleResolution": "bundler",
+    "tsBuildInfoFile": "out-tsc/sprint-notes-remote/tsconfig.app.tsbuildinfo",
+    "emitDeclarationOnly": true,
+    "experimentalDecorators": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
-  "exclude": [
-    "eslint.config.js",
-    "eslint.config.cjs",
-    "eslint.config.mjs"
-  ]
+  "include": ["src/**/*.ts"],
+  "exclude": ["eslint.config.js", "eslint.config.cjs", "eslint.config.mjs"],
+  "references": []
 }

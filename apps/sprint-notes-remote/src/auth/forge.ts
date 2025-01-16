@@ -1,8 +1,8 @@
-import { FastifyRequest } from 'fastify';
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 import { getApplicationId, getJWKSUrl } from '../util/context';
+import { Request } from 'express';
 
-type ForgeToken = {
+export type ForgeToken = {
   app: {
     installationId: string;
     apiBaseUrl: string;
@@ -39,7 +39,7 @@ type RequestValidationResult = {
 };
 
 export async function validateRequest(
-  request: FastifyRequest
+  request: Request
 ): Promise<RequestValidationResult> {
   const authHeader = request.headers.authorization;
   if (!authHeader) {
