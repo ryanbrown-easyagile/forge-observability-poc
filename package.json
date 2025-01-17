@@ -1,0 +1,24 @@
+{
+  "name": "@jira-observer/sprint-notes-forge-with-remotes",
+  "version": "1.0.45",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "clean": "rimraf dist",
+    "forge": "forge",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@forge/cli": "^10.13.2",
+    "eslint": "^9.18.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "typescript": "5.7.3"
+  },
+  "dependencies": {
+    "@atlassian/forge-graphql": "^13.19.0",
+    "@forge/react": "^10.10.1",
+    "@forge/resolver": "1.6.3"
+  },
+  "packageManager": "yarn@4.5.3"
+}
