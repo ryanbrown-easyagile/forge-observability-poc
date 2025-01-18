@@ -4,7 +4,7 @@ import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { registerInstrumentations } from '@opentelemetry/instrumentation';
 import { ZoneContextManager } from '@opentelemetry/context-zone';
-import { B3Propagator } from '@opentelemetry/propagator-b3';
+import { B3InjectEncoding, B3Propagator } from '@opentelemetry/propagator-b3';
 import { ATTR_SERVICE_NAME } from '@opentelemetry/semantic-conventions';
 import { Resource } from '@opentelemetry/resources';
 import { Counter, metrics } from '@opentelemetry/api';
@@ -36,7 +36,9 @@ export function initTracing(serviceName: string) {
 
   provider.register({
     contextManager: new ZoneContextManager(),
-    propagator: new B3Propagator(),
+    propagator: new B3Propagator({
+      injectEncoding: B3InjectEncoding.MULTI_HEADER
+    }),
   });
 
   const meterProvider = new MeterProvider({

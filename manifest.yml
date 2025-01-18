@@ -22,12 +22,23 @@ permissions:
   content:
     styles:
       - 'unsafe-inline'
+  external:
+    fetch:
+      client:
+        - remote: observability
 resources:
   - key: main
     path: static/client-app/dist
 remotes:
   - key: notes-service
     baseUrl: https://rbrown-eanotes-remote.au.ngrok.io/
+    operations:
+      - compute
+      - storage
+    storage:
+      inScopeEUD: false
+  - key: observability
+    baseUrl: https://rbrown-otel.ngrok.app/
     operations:
       - compute
       - storage
