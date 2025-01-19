@@ -13,8 +13,8 @@ modules:
     - key: easy-agile-sprint-notes-forge-with-remotes-hello-world-board-action
       resource: main
       resolver:
-        # function: resolver
-        endpoint: remote-note-service
+        function: resolver
+        # endpoint: remote-note-service
       viewportSize: large
       title: Sprint Notes (Forge - with Remotes)
   endpoint:
@@ -23,6 +23,7 @@ modules:
 permissions:
   scopes:
     - read:sprint:jira-software
+    - storage:app
   content:
     styles:
       - 'unsafe-inline'
@@ -52,3 +53,22 @@ app:
   runtime:
     name: nodejs20.x
   id: ari:cloud:ecosystem::app/0e29d14c-20f4-4a77-beaa-13d25e848709
+  storage:
+    entities:
+      - name: note
+        attributes:
+          title: 
+            type: string
+          content: 
+            type: string
+          sprintId: 
+            type: integer
+          projectId: 
+            type: string
+        indexes:
+          - name: by-project-and-sprint
+            partition: 
+              - projectId
+              - sprintId
+            range: 
+              - projectId  
