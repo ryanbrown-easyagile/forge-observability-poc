@@ -3,7 +3,7 @@ import { invokeRemote } from "@forge/api";
 
 const resolver = new Resolver();
 
-resolver.define('getNotes', async ({context, payload}) => {
+resolver.define('getNotesViaRemote', async ({context, payload}) => {
     console.log('Fetching notes for project', payload.projectId, 'and sprint', payload.sprintId);
     const res = await invokeRemote("notes-service", {
       path: `/api/project/${payload.projectId}/sprint/${payload.sprintId}/notes`,
@@ -18,7 +18,7 @@ resolver.define('getNotes', async ({context, payload}) => {
     }
 });
 
-resolver.define('saveNotes', async ({context, payload}) => {
+resolver.define('saveNotesViaRemote', async ({context, payload}) => {
   if(!payload.note || !payload.note.title || !payload.note.content) {
     throw new Error("Note title and content are required");
   }

@@ -13,9 +13,13 @@ modules:
     - key: easy-agile-sprint-notes-forge-with-remotes-hello-world-board-action
       resource: main
       resolver:
-        function: resolver
+        # function: resolver
+        endpoint: remote-note-service
       viewportSize: large
       title: Sprint Notes (Forge - with Remotes)
+  endpoint:
+    - key: remote-note-service
+      remote: notes-service
 permissions:
   scopes:
     - read:sprint:jira-software

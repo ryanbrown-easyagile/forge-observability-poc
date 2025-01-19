@@ -1,17 +1,17 @@
-import { NoteType } from './type';
-import Form, { Field, FormApi, FormFooter } from '@atlaskit/form';
-import TextField from '@atlaskit/textfield';
-import TextArea from '@atlaskit/textarea';
-import Button from '@atlaskit/button/new';
-import { emitNoteCreated } from './event';
-import { emitErrorOccurred } from '../util/errorEvent';
-import { useState } from 'react';
-import { useSprintChangedListener } from '../sprint';
-import { invoke } from '@forge/bridge';
+import Form, { Field, FormApi, FormFooter } from "@atlaskit/form";
+import TextField from "@atlaskit/textfield";
+import TextArea from "@atlaskit/textarea";
+import Button from "@atlaskit/button/new";
+import { emitNoteCreated } from "./event";
+import { emitErrorOccurred } from "../util/errorEvent";
+import { useState } from "react";
+import { useSprintChangedListener } from "../sprint";
+import { NoteService } from "../services/noteService";
 
 type NoteFormProps = {
   sprintId: number;
   projectId: string;
+  noteService: NoteService;
 };
 
 type NoteFormState = {
@@ -28,15 +28,17 @@ export function NoteForm(props: NoteFormProps) {
     formState: NoteFormState,
     form: FormApi<NoteFormState>
   ) => {
-    invoke('saveNotes', {projectId: props.projectId, sprintId: sprintId, note: {
+    const note = {
       title: formState.title,
-      content: formState.content
-    } })
+      content: formState.content,
+    };
+    props.noteService
+      .saveNote(props.projectId, sprintId, note)
       .then((createdNote) => {
-        emitNoteCreated(createdNote as NoteType);
+        emitNoteCreated(createdNote);
         form.restart({
-          title: '',
-          content: '',
+          title: "",
+          content: "",
         });
       })
       .catch((error) => {

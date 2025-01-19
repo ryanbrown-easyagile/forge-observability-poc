@@ -8,8 +8,9 @@ import Spinner from "@atlaskit/spinner";
 import Heading from "@atlaskit/heading";
 import { view } from "@forge/bridge";
 import { useEffect } from "react";
+import { NoteService } from "../services/noteService";
 
-export function App() {
+export function BaseApp(props: { noteService: NoteService }) {
   const agileState = useAgileState();
   useEffect(() => {
     view.theme.enable();
@@ -35,10 +36,12 @@ export function App() {
         <NoteForm
           projectId={agileState.projectId}
           sprintId={agileState.sprintId}
+          noteService={props.noteService}
         />
         <NoteList
           projectId={agileState.projectId}
           sprintId={agileState.sprintId}
+          noteService={props.noteService}
         />
       </Stack>
     );
@@ -56,4 +59,4 @@ export function App() {
   );
 }
 
-export default App;
+export default BaseApp;
