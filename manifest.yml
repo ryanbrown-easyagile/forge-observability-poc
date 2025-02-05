@@ -31,6 +31,8 @@ permissions:
     fetch:
       client:
         - remote: observability
+      backend:
+        - remote: observability
 resources:
   - key: main
     path: static/client-app/dist

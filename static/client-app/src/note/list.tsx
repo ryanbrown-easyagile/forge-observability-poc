@@ -25,9 +25,11 @@ export function NoteList(props: NoteListProps) {
     sprintId: number,
     noteService: NoteService
   ) => {
-    noteService.getNotes(projectId, sprintId).then((data) => {
-      setNotes(data.notes);
-    });
+    if (sprintId && projectId) {
+      noteService.getNotes(projectId, sprintId).then((data) => {
+        setNotes(data.notes);
+      });
+    }
   };
 
   useNoteCreatedListener(() => {
