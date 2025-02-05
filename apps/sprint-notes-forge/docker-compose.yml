@@ -1,0 +1,11 @@
+services:
+  node:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: sprint-notes-forge-with-remotes
+    working_dir: /app
+    volumes:
+      - .:/app
+    env_file:
+      - .env
