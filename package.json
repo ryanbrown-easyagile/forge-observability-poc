@@ -5,7 +5,8 @@
   "private": true,
   "devDependencies": {
     "@eslint/js": "^9.8.0",
-    "@forge/cli": "^10.13.2",
+    "@forge/bridge": "^4.3.0",
+    "@forge/cli": "^10.13.4",
     "@nx/devkit": "^20.3.0",
     "@nx/esbuild": "20.3.0",
     "@nx/eslint": "20.3.0",
@@ -60,7 +61,7 @@
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
-    "typescript": "~5.6.2",
+    "typescript": "~4.8.4",
     "typescript-eslint": "^8.13.0",
     "vite": "^5.0.0",
     "vite-plugin-eslint": "^1.8.1",
@@ -71,7 +72,7 @@
     "apps/*",
     "libs/*"
   ],
-  "packageManager": "yarn@4.5.3",
+  "packageManager": "yarn@4.6.0",
   "dependencies": {
     "@atlaskit/button": "^20.3.7",
     "@atlaskit/css-reset": "^6.11.2",
@@ -89,6 +90,8 @@
     "@atlaskit/tokens": "^2.5.1",
     "@fastify/autoload": "~5.7.1",
     "@fastify/sensible": "~5.2.0",
+    "@forge/api": "^4.1.2",
+    "@forge/resolver": "^1.6.4",
     "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.55.0",
     "@opentelemetry/auto-instrumentations-web": "^0.45.0",

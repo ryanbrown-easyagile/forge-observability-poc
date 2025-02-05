@@ -131,4 +131,6 @@ resolver.define("saveNotesViaRemote", async ({ context, payload }) => {
   }
 });
 
-export const handler = resolver.getDefinitions();
+const handler = resolver.getDefinitions() as any;
+
+export { handler as default };

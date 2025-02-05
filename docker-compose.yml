@@ -108,6 +108,16 @@ services:
       - remote
     networks:
       - jira-observability
+  forge-app:
+    build: 
+      context: ./apps/sprint-notes-forge
+      dockerfile: Dockerfile
+    container_name: sprint-notes-forge
+    working_dir: /app
+    volumes:
+      - .:/app
+    env_file:
+      - config/forge/.env
 
   # ################### #
   # Observability stack #

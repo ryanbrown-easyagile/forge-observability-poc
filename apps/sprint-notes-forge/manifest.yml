@@ -35,7 +35,7 @@ permissions:
         - remote: observability
 resources:
   - key: main
-    path: static/client-app/dist
+    path: ../sprint-notes-forge-ui/dist
 remotes:
   - key: notes-service
     baseUrl: https://rbrown-eanotes-remote.au.ngrok.io/

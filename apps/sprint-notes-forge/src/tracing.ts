@@ -1,5 +1,5 @@
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
-import { __getRuntime, asUser } from "@forge/api";
+import { __getRuntime } from "@forge/api";
 import {
   propagation,
   trace,
@@ -12,7 +12,6 @@ import {
   isValidTraceId,
   isValidSpanId,
   TraceFlags,
-  ROOT_CONTEXT,
   context,
 } from "@opentelemetry/api";
 import {
