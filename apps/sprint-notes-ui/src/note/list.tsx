@@ -30,9 +30,14 @@ export function NoteList(props: NoteListProps) {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => response.json())
+      .then(async (response) => {
+        return {
+          status: response.status,
+          headers: response.headers,
+          notes: await response.json() as { notes: NoteType[] },
+      }})
       .then((data) => {
-        setNotes(data.notes);
+        setNotes(data.notes.notes);
       });
   };
 

@@ -36,7 +36,10 @@ testem.log
 ngrok.yml
 config/ngrok/ngrok.connect.yml
 config/ngrok/ngrok.otel.yml
+config/ngrok/ngrok.remote.yml
 config/forge/.env
+config/forge/.cron.env
+
 
 # System Files
 .DS_Store

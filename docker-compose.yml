@@ -40,6 +40,7 @@ services:
       OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE: ${OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE}
       OTEL_RESOURCE_ATTRIBUTES: ${OTEL_RESOURCE_ATTRIBUTES}
       OTEL_SERVICE_NAME: ea-notes-remote
+      APP_ID: ari:cloud:ecosystem::app/0e29d14c-20f4-4a77-beaa-13d25e848709
     ports:
       - '3334:3333'
     depends_on:
@@ -93,10 +94,35 @@ services:
       - web
     networks:
       - jira-observability
+  ngrok-remote:
+    image: ngrok/ngrok:latest
+    restart: unless-stopped
+    command:
+      - 'start'
+      - '--all'
+      - '--config'
+      - '/etc/ngrok.yml'
+    volumes:
+      - ./config/ngrok/ngrok.remote.yml:/etc/ngrok.yml
+    depends_on:
+      - remote
+    networks:
+      - jira-observability
 
   # ################### #
   # Observability stack #
   # ################### #
+  forge-cron:
+    build:
+      context: ./apps/sprint-notes-forge-cron
+      dockerfile: Dockerfile
+    depends_on:
+      otelcol:
+        condition: service_started
+    env_file: 
+     - config/forge/.cron.env
+    networks:
+      - jira-observability
   jaeger:
     image: jaegertracing/jaeger-collector:latest
     container_name: jaeger

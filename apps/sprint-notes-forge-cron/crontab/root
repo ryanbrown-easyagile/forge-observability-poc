@@ -1,0 +1,3 @@
+# min hour day month weekday command
+* * * * * /bin/date --rfc-2822 >> /var/log/cron.log
+*/1 * * * * node /app/main.js >> /var/log/cron.log 2>&1

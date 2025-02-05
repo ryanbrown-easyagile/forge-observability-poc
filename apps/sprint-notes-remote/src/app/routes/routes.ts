@@ -86,7 +86,7 @@ export async function routes(app: Express) {
           title: req.body.title,
           content: req.body.content,
           dateCreated: new Date(),
-          author: token.app.principal,
+          author: token.principal,
         })
       )
         .then((note) => res.json(note))

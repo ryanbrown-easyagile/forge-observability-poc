@@ -11,6 +11,9 @@
     },
     {
       "path": "./apps/sprint-notes-remote"
+    },
+    {
+      "path": "./apps/sprint-notes-forge-cron"
     }
   ]
 }

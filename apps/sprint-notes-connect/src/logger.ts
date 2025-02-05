@@ -6,12 +6,13 @@ import { Express } from 'express';
 let _logger: Logger;
 function getLogger() {
   if (!_logger) {
-    const isProduction = process.env.NODE_ENV === 'production';
-    const transport: winston.transport = isProduction
-      ? new OpenTelemetryTransportV3()
-      : new winston.transports.Console();
+    // const isProduction = process.env.NODE_ENV === 'production';
+    const transports: winston.transport[] = [
+      new OpenTelemetryTransportV3(),
+      new winston.transports.Console(),
+    ];
     _logger = winston.createLogger({
-      transports: [transport],
+      transports: transports,
     });
   }
   return _logger;

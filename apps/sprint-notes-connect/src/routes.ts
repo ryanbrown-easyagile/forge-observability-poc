@@ -3,7 +3,7 @@ import { Express, Request, Router } from 'express';
 import { createNote, getNotes } from './data/notes';
 import { AceRequest } from './types';
 import { Note } from './model/notes';
-import { error } from './logger';
+import { error, info } from './logger';
 import { getCurrentTraceInfo } from './tracer';
 
 export default function routes(app: Express, addon: AddOn) {
@@ -39,11 +39,21 @@ export default function routes(app: Express, addon: AddOn) {
   type NoteRequestBody = { title: string; content: string };
   const apiRoute = Router();
   apiRoute.use(addon.authenticate(true));
+  apiRoute.use((req, res, next) => {
+    const traceInfo = getCurrentTraceInfo();
+    if(traceInfo) {
+      res.setHeader('X-B3-TraceId', traceInfo?.traceId);
+      res.setHeader('X-B3-SpanId', traceInfo?.spanId);
+      res.setHeader('X-B3-Flags', traceInfo?.traceFlags.toString());
+    }
+    next();
+  });
   app.use('/api', apiRoute);
 
   apiRoute.get(
     '/project/:projectKey/sprint/:sprintId/notes',
     async (req, res) => {
+      info('GET Notes with Headers', JSON.stringify(req.headers));
       if (!req.params.projectKey) {
         res.status(400).json({ msg: 'Project Key is required' });
         return;

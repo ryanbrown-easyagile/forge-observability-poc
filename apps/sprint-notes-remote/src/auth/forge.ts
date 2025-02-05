@@ -27,9 +27,9 @@ export type ForgeToken = {
       trialEndDate: string;
       type: 'COMMERCIAL' | 'COMMUNITY' | 'ACADEMIC' | 'DEVELOPER';
     };
-    context: unknown;
-    principal: string;
   };
+  context: unknown;
+  principal: string;
 };
 
 type RequestValidationResult = {
