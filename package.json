@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "private": true,
+  "scripts": {
+    "build:all": "nx run-many --target=build --all"
+  },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
     "@forge/bridge": "^4.3.0",
