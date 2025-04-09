@@ -2,11 +2,9 @@ import { Stack, Text } from '@atlaskit/primitives';
 import Heading from '@atlaskit/heading';
 import { NoteType } from './type';
 import Avatar from '@atlaskit/avatar';
-import Comment, {
-  CommentAuthor,
-  CommentTime,
-} from '@atlaskit/comment';
+import Comment, { CommentAuthor, CommentTime } from '@atlaskit/comment';
 import { useEffect, useState } from 'react';
+import { requestJira } from '@forge/bridge';
 
 type NoteProps = {
   note: NoteType;
@@ -30,13 +28,9 @@ export function Note({ note }: NoteProps) {
   const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
-    AP.request({
-      url: `/rest/api/2/user?accountId=${note.author}`,
-      type: 'GET',
-      contentType: 'application/json',
-    })
-      .then((response) => {
-        const user = JSON.parse(response.body) as User;
+    requestJira(`/rest/api/3/user?accountId=${note.author}`)
+      .then((response) => response.json() as Promise<User>)
+      .then((user) => {
         console.log('User:', user);
         setUser(user);
       })
@@ -56,7 +50,7 @@ export function Note({ note }: NoteProps) {
       avatar={
         <Avatar
           name={user ? user.displayName : 'unknown'}
-          src={user ? user.avatarUrls['16x16'] : undefined}
+          src={user ? user.avatarUrls['48x48'] : undefined}
           size="small"
         />
       }

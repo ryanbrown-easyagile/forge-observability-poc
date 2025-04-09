@@ -38,7 +38,7 @@ resources:
     path: ../sprint-notes-forge-ui/dist
 remotes:
   - key: notes-service
-    baseUrl: https://rbrown-eanotes-remote.au.ngrok.io/
+    baseUrl: https://rbrown-eanotes-remote.au.ngrok.io/api/
     operations:
       - compute
       - storage

@@ -9,40 +9,43 @@ app:
 remotes:
   - key: connect
     baseUrl: https://rbrown-eanotes.au.ngrok.io/
+  - key: notes-service
+    baseUrl: https://rbrown-eanotes.au.ngrok.io/
+    operations:
+      - compute
+      - storage
+    storage:
+      inScopeEUD: false
 connectModules:
   jira:lifecycle:
     - key: lifecycle-events
       installed: /installed
       enabled: /enabled
-  jira:webItems:
-    - location: jira.software.board.tools
-      weight: 200
-      styleClasses:
-        - webitem
-        - system-present-webitem
-      context: addon
-      target:
-        type: dialogmodule
-        options:
-          key: sprint-notes-dialog
-      tooltip:
-        value: Sprint Notes
-      name:
-        value: Sprint Notes
-      key: web-item-board
-      icon:
-        width: 24
-        height: 24
-        url: /assets/img/icon.svg
-  jira:dialogs:
-    - url: /notes?boardId={board.id}
-      options:
-        chrome: false
-        header:
-          value: Sprint Notes
-        size: x-large
-      key: sprint-notes-dialog
+modules:
+  jira:boardAction:
+    - key: easy-agile-sprint-notes-on-forge
+      resource: main
+      resolver:
+        endpoint: remote-note-service
+      viewportSize: large
+      title: Sprint Notes (Forge - with Remotes)
+  endpoint:
+    - key: remote-note-service
+      remote: notes-service
+resources:
+  - key: main
+    path: ../sprint-notes-forge-ui/dist
 permissions:
   scopes:
     - read:connect-jira
     - act-as-user:connect-jira
+    - read:sprint:jira-software
+    - read:user:jira
+    - read:avatar:jira
+    - read:application-role:jira
+    - read:group:jira
+  content:
+    scripts:
+      - 'unsafe-inline'
+    styles:
+      - 'unsafe-inline'

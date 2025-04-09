@@ -11,7 +11,7 @@ type RemoteResponse<T> = {
 export class RemoteNoteService implements NoteService {
   async getNotes(projectId: string, sprintId: number): Promise<NoteList> {
     return invokeRemote<RemoteResponse<NoteList>>({
-      path: `/api/project/${projectId}/sprint/${sprintId}/notes`,
+      path: `/api/v2/project/${projectId}/sprint/${sprintId}/notes`,
       method: "GET",
     }).then(response => {
       const traceId = response.headers['x-trace-id'];
@@ -26,7 +26,7 @@ export class RemoteNoteService implements NoteService {
     note: NoteType
   ): Promise<NoteType> {
     return invokeRemote<RemoteResponse<NoteType>>({
-        path: `/api/project/${projectId}/sprint/${sprintId}/notes`,
+        path: `/api/v2/project/${projectId}/sprint/${sprintId}/notes`,
         method: "POST", 
         body: note,
         headers: {

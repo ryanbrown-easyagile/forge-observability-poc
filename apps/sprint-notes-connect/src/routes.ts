@@ -1,6 +1,6 @@
 import { AddOn } from 'atlassian-connect-express';
 import { Express, Request, Response, Router } from 'express';
-import { createNote, getNotes, getNotesByInstallationId } from './data/notes';
+import { createNote, getNotes, getNotesByInstallationId, updateInstallationIds } from './data/notes';
 import { AceRequest, ForgeRequest } from './types';
 import { Note, NoteList } from './model/notes';
 import { error } from './logger';
@@ -20,9 +20,16 @@ export default function routes(app: Express, addon: AddOn) {
   app.get('/', (req, res) => {
     res.redirect('/atlassian-connect.json');
   });
+  addon.on('host_settings_not_saved', (clientKey: string, data: any) => {
+    console.log('Install failed', clientKey, data);
+  });
 
   addon.on('host_settings_saved', (clientKey: string, data: any) => {
     console.log('Installed', clientKey, data);
+    if(data.installationId) {
+      console.log(`Updating data for clientKey ${clientKey} with installationId ${data.installationId}`);
+      updateInstallationIds(clientKey, data.installationId);
+    }
     console.log('Host settings saved');
   });
 
@@ -43,7 +50,6 @@ export default function routes(app: Express, addon: AddOn) {
   type NoteResponseBody = Note | { msg: string };
   type NoteRequestBody = { title: string; content: string };
   const apiRoute = Router();
-  apiRoute.use(addon.authenticate(true));
   apiRoute.use((req, res, next) => {
     const traceInfo = getCurrentTraceInfo();
     if (traceInfo) {
@@ -116,6 +122,7 @@ export default function routes(app: Express, addon: AddOn) {
 
   apiRoute.get(
     '/project/:projectKey/sprint/:sprintId/notes',
+    addon.authenticate(true),
     async (req, res) => {
       const noteGetter = (
         projectKey: string,
@@ -136,6 +143,7 @@ export default function routes(app: Express, addon: AddOn) {
 
   apiRoute.post(
     '/project/:projectKey/sprint/:sprintId/notes',
+    addon.authenticate(true),
     async (
       req: Request<NotePathParams, NoteResponseBody, NoteRequestBody>,
       res
@@ -166,13 +174,9 @@ export default function routes(app: Express, addon: AddOn) {
     }
   );
 
-  const apiV2Route = Router();
-  apiV2Route.use(addon.authenticateForge());
-  apiV2Route.use(addon.associateConnect());
-  app.use('/api/v2', apiV2Route);
-
-  apiV2Route.get(
-    '/project/:projectKey/sprint/:sprintId/notes',
+  apiRoute.get(
+    '/v2/project/:projectKey/sprint/:sprintId/notes',
+    [addon.authenticateForge(), addon.associateConnect()],
     async (req, res) => {
       const noteGetter = (
         projectKey: string,
@@ -194,8 +198,9 @@ export default function routes(app: Express, addon: AddOn) {
     }
   );
 
-  apiV2Route.post(
-    '/project/:projectKey/sprint/:sprintId/notes',
+  apiRoute.post(
+    '/v2/project/:projectKey/sprint/:sprintId/notes',
+    [addon.authenticateForge(), addon.associateConnect()],
     async (req, res) => {
       const noteCreator = (
         projectKey: string,
