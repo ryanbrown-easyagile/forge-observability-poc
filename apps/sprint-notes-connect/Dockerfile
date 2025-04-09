@@ -1,4 +1,4 @@
-FROM docker.io/node:lts-alpine
+FROM docker.io/node:18-alpine
 
 ENV HOST=0.0.0.0
 ENV PORT=3333
@@ -11,13 +11,13 @@ RUN addgroup --system sprint-notes-connect && \
 
 RUN corepack enable && corepack prepare yarn@${YARN_VERSION}
 
-COPY dist/package.json .
-RUN chown -R sprint-notes-connect:sprint-notes-connect .
+COPY --chown=sprint-notes-connect:sprint-notes-connect dist/package.json .
+# RUN chown -R sprint-notes-connect:sprint-notes-connect .
 # You can remove this install step if you build with `--bundle` option.
 # The bundled output will include external dependencies.
 RUN npm --omit=dev -f install
 
-COPY dist .
-RUN chown -R sprint-notes-connect:sprint-notes-connect .
+COPY --chown=sprint-notes-connect:sprint-notes-connect dist .
+# RUN chown -R sprint-notes-connect:sprint-notes-connect .
 
-CMD [ "node", "main.js" ]
+CMD [ "node", "--experimental-specifier-resolution=node", "main.js" ]

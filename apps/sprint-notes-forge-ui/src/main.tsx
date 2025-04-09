@@ -1,8 +1,8 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 // import { RemoteViaFunctionApp } from './app/RemoteViaFunctionApp';
-// import { RemoteDirectApp } from './app/RemoteDirectApp';
-import { NativeApp } from './app/NativeApp';
+import { RemoteDirectApp } from './app/RemoteDirectApp';
+// import { NativeApp } from './app/NativeApp';
 import { initTracing } from './app/tracing';
 import '@atlaskit/css-reset';
 
@@ -14,6 +14,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <StrictMode>
-      <NativeApp />
+      <RemoteDirectApp />
   </StrictMode>
 );

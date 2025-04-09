@@ -5,7 +5,8 @@
   "scripts": {
     "build": "node scripts/create-package-json.cjs",
     "ngrok": "ngrok start --config ngrok.yml --all",
-    "prettier": "prettier ."
+    "prettier": "prettier .",
+    "typeorm": "typeorm-ts-node-esm"
   },
   "nx": {
     "name": "sprint-notes-connect",
@@ -54,6 +55,7 @@
           "outputFileName": "main.js",
           "tsConfig": "apps/sprint-notes-connect/tsconfig.app.json",
           "platform": "node",
+          "bundle": false,
           "format": [
             "esm"
           ],
@@ -81,7 +83,7 @@
             "minify": false
           },
           "production": {
-            "minify": true
+            "minify": false
           }
         }
       }

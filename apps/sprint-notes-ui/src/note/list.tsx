@@ -49,7 +49,7 @@ export function NoteList(props: NoteListProps) {
     refreshNotes(props.projectId, sprintId, jwt);
   }, [props.projectId, sprintId, jwt]);
   return (
-    <Stack>
+    <Stack space='space.200'>
       {notes.map((note) => (
         <Note key={note.id} note={note} />
       ))}

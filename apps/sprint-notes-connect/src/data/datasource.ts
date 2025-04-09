@@ -64,5 +64,7 @@ export const dataSource: DataSource = new DataSource({
   url: process.env.DATABASE_URL,
   maxQueryExecutionTime: 5000,
   logger: new WinstonLogger(),
-  synchronize: true,
+  synchronize: false,
+  migrations: ["data/migrations/*"],
+  migrationsRun: true,
 });

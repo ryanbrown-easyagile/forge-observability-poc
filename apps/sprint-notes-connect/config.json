@@ -54,6 +54,7 @@
   // Configuration for production, which is enabled by setting
   // the NODE_ENV=production environment variable.
   "production": {
+    "appId": "ari:cloud:ecosystem::app/a4ee431d-357e-4cd9-b152-c9381e854c7e",
     // PaaS like Heroku will provide HTTP port via environement variable.
     "port": "$PORT",
     // Use views/unauthorized.hbs for error page.

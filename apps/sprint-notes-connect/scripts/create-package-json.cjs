@@ -26,6 +26,7 @@ async function main() {
     isProduction: true, // Used to strip any non-prod dependencies
     root: resolve(__dirname, '..'), // The root of the workspace
   });
+  packageJson.type = 'module'; // Set the type to module for ESM support
 
   const lockFile = createLockFile(
     packageJson,

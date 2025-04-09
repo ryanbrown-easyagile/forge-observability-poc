@@ -19,6 +19,24 @@ export async function getNotes(
   };
 }
 
+export async function getNotesByInstallationId(
+  installationId: string,
+  projectKey: string,
+  sprintId: number
+): Promise<NoteList> {
+  const notes = await dataSource.manager.find(Note, {
+    where: {
+      sprintId,
+      installationId,
+      projectKey,
+    },
+  });
+  return {
+    sprintId,
+    notes,
+  };
+}
+
 export async function createNote(Note: Note): Promise<Note> {
   return await dataSource.manager.save(Note);
 }

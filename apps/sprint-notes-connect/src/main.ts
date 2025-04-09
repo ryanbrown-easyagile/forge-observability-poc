@@ -86,6 +86,7 @@ app.use(cookieParser());
 // Include atlassian-connect-express middleware
 app.use(addon.middleware());
 
+
 // Mount the static files directory
 const staticDir = path.join(__dirname, 'assets');
 app.use(express.static(staticDir));
