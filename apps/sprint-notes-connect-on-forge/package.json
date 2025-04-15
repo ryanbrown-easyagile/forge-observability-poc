@@ -2,12 +2,51 @@
   "name": "@jira-observability/sprint-notes-connect-on-forge",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "build": "copyfiles manifest.yml dist"
+  "devDependencies": {
+    "copyfiles": "^2.4.1"
   },
   "nx": {
     "name": "sprint-notes-connect-on-forge",
     "projectType": "application",
-    "sourceRoot": "apps/sprint-notes-connect-on-forge/src"
-  }
+    "sourceRoot": "apps/sprint-notes-connect-on-forge/src",
+    "targets": {
+      "build": {
+        "executor": "@nx/esbuild:esbuild",
+        "outputs": [
+          "{options.outputPath}"
+        ],
+        "defaultConfiguration": "production",
+        "options": {
+          "main": "apps/sprint-notes-connect-on-forge/src/index.ts",
+          "outputPath": "apps/sprint-notes-connect-on-forge/dist",
+          "outputFileName": "main.js",
+          "tsConfig": "apps/sprint-notes-connect-on-forge/tsconfig.json",
+          "platform": "node",
+          "format": [
+            "esm"
+          ],
+          "declarationRootDir": "apps/sprint-notes-connect-on-forge/src"
+        },
+        "configurations": {
+          "development": {
+            "minify": false
+          },
+          "production": {
+            "minify": true
+          }
+        }
+      }
+    }
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/main.js"
+    }
+  },
+  "types": "./dist/index.d.ts",
+  "module": "./dist/main.js",
+  "type": "module",
+  "main": "./dist/main.js"
 }

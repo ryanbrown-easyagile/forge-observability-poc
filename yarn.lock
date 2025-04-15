@@ -3574,12 +3574,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@forge/api@npm:5.1.1, @forge/api@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@forge/api@npm:5.1.1"
+  dependencies:
+    "@forge/auth": "npm:0.0.7"
+    "@forge/egress": "npm:1.4.0"
+    "@forge/storage": "npm:1.8.0"
+    "@forge/util": "npm:1.4.8"
+    headers-utils: "npm:^3.0.2"
+  checksum: 10c0/eb30e2620bf10fe6c38cddeb76a40e42798e9b28a3f1b24d80d029e910562d065fa3aa01a054888c266b955ce5e2e7407578f6619df46c16f4b95e16c4a9b946
+  languageName: node
+  linkType: hard
+
 "@forge/auth@npm:0.0.5":
   version: 0.0.5
   resolution: "@forge/auth@npm:0.0.5"
   dependencies:
     tslib: "npm:^2.6.2"
   checksum: 10c0/6ec71aabe1e5273d8057be8d4047e1176092103c52677df8abe8c14ef52d041f3bbe7b42db0cbb19c93ff3656ae1276b5e5bed8e35fd7ccb9f248d468c2edb3a
+  languageName: node
+  linkType: hard
+
+"@forge/auth@npm:0.0.7":
+  version: 0.0.7
+  resolution: "@forge/auth@npm:0.0.7"
+  dependencies:
+    tslib: "npm:^2.6.2"
+  checksum: 10c0/3f7993320502cfa18ca1ca3324e33eeb3d7f72453284d7d3056589cd1802addb1ca18b0a693184e1d81da569129995b2c3f8aaa704e9aaedc21b1df659be93ab
   languageName: node
   linkType: hard
 
@@ -3761,12 +3783,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@forge/egress@npm:1.4.0":
+  version: 1.4.0
+  resolution: "@forge/egress@npm:1.4.0"
+  dependencies:
+    minimatch: "npm:^9.0.3"
+  checksum: 10c0/d47de0ebf0c604602ba4488ad714ba85124d597ff3e42c7974e7d53bc0d1f64d14e13e3f58d1d11b598e1f483e8f5db56f76234cd159e0d8e4752b08d8e69ae0
+  languageName: node
+  linkType: hard
+
+"@forge/events@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "@forge/events@npm:1.0.0"
+  dependencies:
+    "@forge/api": "npm:5.1.1"
+    uuid: "npm:^9.0.1"
+  checksum: 10c0/812bdae8013f305e0c2fc5191174b74274e2c429e344079bda155bff6e242b209441ad5745c004976e5b425bda454509224b1e94f4cbd9ea9d560c6e525ed57c
+  languageName: node
+  linkType: hard
+
 "@forge/i18n@npm:0.0.2":
   version: 0.0.2
   resolution: "@forge/i18n@npm:0.0.2"
   dependencies:
     lodash: "npm:^4.17.21"
   checksum: 10c0/45eca0c20f18f9436c67a2bc9bdf98450dce5e831cb25feebf5c710710eee502f8cff009bb0385fbad6fe2fe6fb8a47a9dd13189315729f194bb15b679fc5c49
+  languageName: node
+  linkType: hard
+
+"@forge/kvs@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@forge/kvs@npm:0.1.1"
+  dependencies:
+    "@forge/api": "npm:^5.1.1"
+  checksum: 10c0/aaa6d262ab394a4f82310bb06cf07a2d778993fc5913f90cf52d8b2c9326b357dc1c279ff408b0d3fdd1f3842187a72de714869f64675882e7cc58af437f4a9b
   languageName: node
   linkType: hard
 
@@ -3828,10 +3878,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@forge/sql@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "@forge/sql@npm:2.4.2"
+  dependencies:
+    "@forge/api": "npm:^5.1.1"
+  checksum: 10c0/750c8906e87d64b649a89a50d78816395fcafe99e96d799a42e8bc5a2417cf68ca918d916ed16fc3e30abb191ca85eb172b93ce801f772d30351266affa93b10
+  languageName: node
+  linkType: hard
+
 "@forge/storage@npm:1.6.0":
   version: 1.6.0
   resolution: "@forge/storage@npm:1.6.0"
   checksum: 10c0/d299200c8fb8d766d48d423af0bda5770c76660389e1e56e98f6ab7c153b2fbf9822e727acc745261ad2b96b4c4a39e3717366da6ff50d38f483d6c1c89dd9a1
+  languageName: node
+  linkType: hard
+
+"@forge/storage@npm:1.8.0":
+  version: 1.8.0
+  resolution: "@forge/storage@npm:1.8.0"
+  checksum: 10c0/2fd175d4b30135c3d7521e178c1faa84c67ccd0904500aefb49ae1257ce044f8fb1d3c4cddfa22135c08d2d37e88b4ecd6cbd0893181e7205dee9ab21c2f5d94
   languageName: node
   linkType: hard
 
@@ -3862,6 +3928,13 @@ __metadata:
   version: 1.4.6
   resolution: "@forge/util@npm:1.4.6"
   checksum: 10c0/8caaa0a2be8b737bc6d7a84fa12ef9117aa9ba874e8f2264bf73fb61ba2065a222c0b1bb27fb8f618cf77d11e59b0140ee11a282320409d1910b230eff58ed8b
+  languageName: node
+  linkType: hard
+
+"@forge/util@npm:1.4.8":
+  version: 1.4.8
+  resolution: "@forge/util@npm:1.4.8"
+  checksum: 10c0/d3ede64010872fadf0153935723d3119f592fca2826ef01013f758d6f47a89cf929ca7f885dd4bc15c60f2125bf0f36f98fb3e758ba9b4c18141541dfb90450c
   languageName: node
   linkType: hard
 
@@ -4242,7 +4315,10 @@ __metadata:
     "@forge/api": "npm:^4.1.2"
     "@forge/bridge": "npm:^4.3.0"
     "@forge/cli": "npm:^10.13.4"
+    "@forge/events": "npm:^1.0.0"
+    "@forge/kvs": "npm:^0.1.1"
     "@forge/resolver": "npm:^1.6.4"
+    "@forge/sql": "npm:^2.4.2"
     "@nx/devkit": "npm:^20.3.0"
     "@nx/esbuild": "npm:20.3.0"
     "@nx/eslint": "npm:20.3.0"
@@ -4346,6 +4422,8 @@ __metadata:
 "@jira-observability/sprint-notes-connect-on-forge@workspace:apps/sprint-notes-connect-on-forge":
   version: 0.0.0-use.local
   resolution: "@jira-observability/sprint-notes-connect-on-forge@workspace:apps/sprint-notes-connect-on-forge"
+  dependencies:
+    copyfiles: "npm:^2.4.1"
   languageName: unknown
   linkType: soft
 
@@ -15591,6 +15669,13 @@ __metadata:
   bin:
     he: bin/he
   checksum: 10c0/a27d478befe3c8192f006cdd0639a66798979dfa6e2125c6ac582a19a5ebfec62ad83e8382e6036170d873f46e4536a7e795bf8b95bf7c247f4cc0825ccc8c17
+  languageName: node
+  linkType: hard
+
+"headers-utils@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "headers-utils@npm:3.0.2"
+  checksum: 10c0/25020779f9ca05bdfa2b8157b3052aa4373ed8f15992c013232de56dc179ffd1c56bdfa851d185bdf708f254fee255b34054fddba8bbfe14544aec975318cdd9
   languageName: node
   linkType: hard
 

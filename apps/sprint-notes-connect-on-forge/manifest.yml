@@ -22,18 +22,44 @@ connectModules:
       installed: /installed
       enabled: /enabled
 modules:
-  jira:boardAction:
-    - key: easy-agile-sprint-notes-on-forge
-      resource: main
+  consumer:
+    - key: notes-data-migration-consumer
+      # Name of the queue for which this consumer will be invoked
+      queue: notes-migration
       resolver:
-        endpoint: remote-note-service
+        function: resolver
+        method: migrate-note-data
+  jira:boardAction:
+    - key: easy-agile-sprint-notes-on-forge-entity-store
+      resource: ui
+      resolver:
+        # endpoint: remote-note-service
+        function: resolver
       viewportSize: large
-      title: Sprint Notes (Forge - with Remotes)
+      title: Sprint Notes (Entity Store)
   endpoint:
     - key: remote-note-service
       remote: notes-service
+  sql:
+    - key: sql-storage
+      engine: mysql
+  scheduledTrigger:
+    - key: db-schema-migrator
+      function: migrator-function
+      interval: fiveMinute 
+  trigger:
+    - key: post-install-schema-migration
+      function: migrator-function
+      events:
+        - avi:forge:installed:app
+        - avi:forge:updated:app
+  function:
+    - key: resolver
+      handler: index.handler
+    - key: migrator-function
+      handler: index.doMigration
 resources:
-  - key: main
+  - key: ui
     path: ../sprint-notes-forge-ui/dist
 permissions:
   scopes:
@@ -44,6 +70,7 @@ permissions:
     - read:avatar:jira
     - read:application-role:jira
     - read:group:jira
+    - storage:app	
   content:
     scripts:
       - 'unsafe-inline'

@@ -1,6 +1,12 @@
 import { AddOn } from 'atlassian-connect-express';
 import { Express, Request, Response, Router } from 'express';
-import { createNote, getNotes, getNotesByInstallationId, updateInstallationIds } from './data/notes';
+import {
+  createNote,
+  getAllNotesByInstallationId,
+  getNotes,
+  getNotesByInstallationId,
+  updateInstallationIds,
+} from './data/notes';
 import { AceRequest, ForgeRequest } from './types';
 import { Note, NoteList } from './model/notes';
 import { error } from './logger';
@@ -26,8 +32,10 @@ export default function routes(app: Express, addon: AddOn) {
 
   addon.on('host_settings_saved', (clientKey: string, data: any) => {
     console.log('Installed', clientKey, data);
-    if(data.installationId) {
-      console.log(`Updating data for clientKey ${clientKey} with installationId ${data.installationId}`);
+    if (data.installationId) {
+      console.log(
+        `Updating data for clientKey ${clientKey} with installationId ${data.installationId}`
+      );
       updateInstallationIds(clientKey, data.installationId);
     }
     console.log('Host settings saved');
@@ -119,6 +127,37 @@ export default function routes(app: Express, addon: AddOn) {
         res.status(500).json({ msg: 'Failed to create note' });
       });
   };
+
+  type AllNotesQueryParams = {
+    page?: string;
+    pageSize?: string;
+  };
+
+  apiRoute.get(
+    '/notes',
+    addon.authenticateForge(),
+    (req: Request<object, object, object, AllNotesQueryParams>, res) => {
+      const forgeRequest = req as ForgeRequest<object, object, object>;
+      const installationId = forgeRequest.context.forge.app.installationId;
+      
+      const page = parseInt(req.query.page ?? '0');
+      if (isNaN(page) || page < 0) {
+        res.status(400).json({ msg: 'Page must be a positive number' });
+        return;
+      }
+
+      const pageSize = parseInt(req.query.pageSize ?? '10');
+      if (isNaN(pageSize) || pageSize < 0) {
+        res.status(400).json({ msg: 'Page size must be a positive number' });
+        return;
+      }
+      getAllNotesByInstallationId(installationId, page, pageSize).then(
+        (notes) => {
+          res.json(notes);
+        }
+      );
+    }
+  );
 
   apiRoute.get(
     '/project/:projectKey/sprint/:sprintId/notes',

@@ -19,6 +19,44 @@ export async function getNotes(
   };
 }
 
+type Page<T> = {
+  result: T[];
+  total: number;
+  page: number;
+  pageSize: number;
+  nextPage?: number;
+}
+
+export async function getAllNotesByInstallationId(
+  installationId: string,
+  page = 0,
+  pageSize = 10
+): Promise<Page<Note>> {
+  const [notes, count] = await dataSource.manager.findAndCount(Note, {
+    where: {
+      installationId
+    },
+    take: pageSize,
+    skip: page * pageSize
+  });
+
+  const maximumPages = Math.ceil(count / pageSize);
+  console.log("Max pages:", maximumPages)
+  let nextPage: number | undefined = page + 1;
+  if (nextPage >= maximumPages) {
+    console.log("Exceeded max-pages:", nextPage)
+    nextPage = undefined;
+  }
+
+  return {
+    result: notes,
+    total: count,
+    page,
+    pageSize,
+    nextPage
+  }
+}
+
 export async function getNotesByInstallationId(
   installationId: string,
   projectKey: string,
