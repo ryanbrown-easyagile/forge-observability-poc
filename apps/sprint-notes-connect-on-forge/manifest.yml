@@ -6,6 +6,34 @@ app:
     authentication: jwt
   runtime:
     name: nodejs20.x
+  storage:
+    entities:
+      - name: notes
+        attributes:
+          sprintId: 
+            type: integer
+          projectKey: 
+            type: string
+          title: 
+            type: string
+          content: 
+            type: string
+          author: 
+            type: string
+          dateCreated: 
+            type: integer
+          createdAt: 
+            type: string
+        indexes:
+          - name: by-project-and-sprint
+            partition: 
+              - projectKey
+              - sprintId
+            range: 
+              - projectKey 
+          - name: by-id
+            range: 
+              - projectKey 
 remotes:
   - key: connect
     baseUrl: https://rbrown-eanotes.au.ngrok.io/
@@ -37,6 +65,14 @@ modules:
         function: resolver
       viewportSize: large
       title: Sprint Notes (Entity Store)
+  jira:adminPage:
+    - key: sprint-notes-admin-page
+      resource: admin
+      title: Configure Sprint Notes
+      render: native
+      resolver:
+        function: resolver
+      useAsConfig: true
   endpoint:
     - key: remote-note-service
       remote: notes-service
@@ -46,7 +82,7 @@ modules:
   scheduledTrigger:
     - key: db-schema-migrator
       function: migrator-function
-      interval: fiveMinute 
+      interval: hour 
   trigger:
     - key: post-install-schema-migration
       function: migrator-function
@@ -61,6 +97,8 @@ modules:
 resources:
   - key: ui
     path: ../sprint-notes-forge-ui/dist
+  - key: admin
+    path: ./src/frontend/admin.tsx
 permissions:
   scopes:
     - read:connect-jira
@@ -76,3 +114,4 @@ permissions:
       - 'unsafe-inline'
     styles:
       - 'unsafe-inline'
+

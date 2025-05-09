@@ -1,4 +1,4 @@
-import { migrationRunner, ForgeSQLAPIError } from '@forge/sql';
+import { migrationRunner } from '@forge/sql';
 
 migrationRunner
   .enqueue(

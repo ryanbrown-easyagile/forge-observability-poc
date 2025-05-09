@@ -4,39 +4,20 @@ import { NoteType } from './type';
 import Avatar from '@atlaskit/avatar';
 import Comment, { CommentAuthor, CommentTime } from '@atlaskit/comment';
 import { useEffect, useState } from 'react';
-import { requestJira } from '@forge/bridge';
+import { getUser, User } from '../services/userService';
 
 type NoteProps = {
   note: NoteType;
-};
-
-type User = {
-  accountId: string;
-  accountType: string;
-  active: boolean;
-  avatarUrls: {
-    '16x16': string;
-    '24x24': string;
-    '32x32': string;
-    '48x48': string;
-  };
-  displayName: string;
-  emailAddress: string;
 };
 
 export function Note({ note }: NoteProps) {
   const [user, setUser] = useState<User | undefined>(undefined);
 
   useEffect(() => {
-    requestJira(`/rest/api/3/user?accountId=${note.author}`)
-      .then((response) => response.json() as Promise<User>)
+    getUser(note.author)
       .then((user) => {
-        console.log('User:', user);
         setUser(user);
       })
-      .catch((error) => {
-        console.error('Error fetching user:', error);
-      });
   }, [note.author]);
 
   return (

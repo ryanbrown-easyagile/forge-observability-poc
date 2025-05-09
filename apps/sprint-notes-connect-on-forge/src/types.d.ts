@@ -1,7 +1,7 @@
 type Note = {
     sprintId: number;
     projectKey: string;
-    id?: number;
+    id?: string;
     title: string;
     content: string;
     author: string;

@@ -1,6 +1,7 @@
 import { invokeRemote } from '@forge/api';
 import { kvs } from '@forge/kvs';
 import SqlNotesRepository from '../data/sql/notesRepository';
+import EntityNotesRepository from '../data/entity/notesRepository';
 import { pushToNoteMigrationQueue } from './helper';
 
 export async function migrateData(page: number, pageSize: number) {
@@ -21,10 +22,12 @@ export async function migrateData(page: number, pageSize: number) {
             author: note.author
         }
     });
+    console.log(`Migrating ${notes.length} notes from page ${page}`);
     if (notes.length === 0) {
         return;
     }
     await SqlNotesRepository.bulkAddNotes(notes);
+    await EntityNotesRepository.bulkAddNotes(notes);
     console.log(`Migrated ${notes.length} notes from page ${page}`);
     if(body.nextPage) {
         pushToNoteMigrationQueue(body.nextPage);
