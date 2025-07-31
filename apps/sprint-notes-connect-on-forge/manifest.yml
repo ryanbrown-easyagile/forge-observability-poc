@@ -2,8 +2,6 @@ app:
   id: ari:cloud:ecosystem::app/a4ee431d-357e-4cd9-b152-c9381e854c7e
   connect:
     key: com.easyagile.sprint.notes
-    remote: connect
-    authentication: jwt
   runtime:
     name: nodejs20.x
   storage:
@@ -44,11 +42,6 @@ remotes:
       - storage
     storage:
       inScopeEUD: false
-connectModules:
-  jira:lifecycle:
-    - key: lifecycle-events
-      installed: /installed
-      enabled: /enabled
 modules:
   consumer:
     - key: notes-data-migration-consumer
@@ -101,8 +94,6 @@ resources:
     path: ./src/frontend/admin.tsx
 permissions:
   scopes:
-    - read:connect-jira
-    - act-as-user:connect-jira
     - read:sprint:jira-software
     - read:user:jira
     - read:avatar:jira
